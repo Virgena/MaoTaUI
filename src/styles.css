@@ -1,0 +1,297 @@
+:root {
+  color-scheme: dark;
+
+  --mt-bg: #0f1012;
+  --mt-surface: #16181c;
+  --mt-surface-2: #1e2126;
+  --mt-border: #2b2f36;
+  --mt-text: #ecedef;
+  --mt-muted: #8d9299;
+  --mt-accent: #f4f5f6;
+  --mt-on-accent: #0f1012;
+  --mt-danger: #d07a6c;
+  --mt-danger-soft: #2a1c1a;
+
+  --mt-color-primary: #7497c6;
+  --mt-color-secondary: #ae84cd;
+  --mt-color-success: #44a775;
+  --mt-color-warning: #b68f4c;
+  --mt-color-danger: var(--mt-danger);
+  --mt-color-info: #4aa0b5;
+  --mt-color-neutral: var(--mt-accent);
+
+  --mt-radius: 6px;
+  --mt-radius-sm: 4px;
+
+  --mt-space-1: 4px;
+  --mt-space-2: 8px;
+  --mt-space-3: 12px;
+  --mt-space-4: 16px;
+  --mt-space-5: 24px;
+  --mt-space-6: 32px;
+
+  --mt-fs-xs: 12px;
+  --mt-fs-sm: 13px;
+  --mt-fs-md: 14px;
+  --mt-fs-lg: 16px;
+  --mt-fs-xl: 20px;
+  --mt-fs-2xl: 26px;
+  --mt-lh: 1.6;
+  --mt-lh-tight: 1.3;
+
+  --mt-dur-fast: 150ms;
+  --mt-dur: 200ms;
+  --mt-ease: ease-out;
+
+  --mt-shadow-overlay: 0 8px 24px rgb(0 0 0 / 0.35);
+
+  --mt-font: system-ui, "Segoe UI", "Microsoft YaHei", sans-serif;
+  --mt-mono: ui-monospace, "Cascadia Mono", Consolas, monospace;
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+
+  --mt-bg: #ffffff;
+  --mt-surface: #f7f7f8;
+  --mt-surface-2: #efeff1;
+  --mt-border: #e4e4e7;
+  --mt-text: #17181a;
+  --mt-muted: #5f646a;
+  --mt-accent: #17181a;
+  --mt-on-accent: #ffffff;
+  --mt-danger: #a8443a;
+  --mt-danger-soft: #fbf0ee;
+
+  --mt-color-primary: #3a6298;
+  --mt-color-secondary: #8443b1;
+  --mt-color-success: #296d4b;
+  --mt-color-warning: #785d2e;
+  --mt-color-danger: var(--mt-danger);
+  --mt-color-info: #2e6978;
+  --mt-color-neutral: var(--mt-accent);
+
+  --mt-shadow-overlay: 0 8px 24px rgb(0 0 0 / 0.12);
+}
+
+.mt-btn {
+  --c: var(--mt-color-neutral);
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--mt-space-1);
+  font: inherit;
+  font-size: var(--mt-fs-md);
+  line-height: var(--mt-lh-tight);
+  border: 1px solid transparent;
+  border-radius: var(--mt-radius);
+  padding: 6px var(--mt-space-3);
+  cursor: pointer;
+  color: var(--mt-text);
+  background: var(--mt-surface-2);
+  text-decoration: none;
+  transition: background-color var(--mt-dur-fast) var(--mt-ease),
+    border-color var(--mt-dur-fast) var(--mt-ease), color var(--mt-dur-fast) var(--mt-ease);
+}
+
+.mt-btn:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.mt-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.mt-btn-primary {
+  --c: var(--mt-color-primary);
+}
+
+.mt-btn-secondary {
+  --c: var(--mt-color-secondary);
+}
+
+.mt-btn-success {
+  --c: var(--mt-color-success);
+}
+
+.mt-btn-warning {
+  --c: var(--mt-color-warning);
+}
+
+.mt-btn-danger {
+  --c: var(--mt-color-danger);
+}
+
+.mt-btn-info {
+  --c: var(--mt-color-info);
+}
+
+.mt-btn-neutral {
+  --c: var(--mt-color-neutral);
+}
+
+.mt-btn-solid {
+  background: var(--c);
+  color: var(--mt-on-accent);
+}
+
+.mt-btn-solid:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--c) 88%, var(--mt-bg));
+}
+
+.mt-btn-shadow {
+  background: var(--c);
+  color: var(--mt-on-accent);
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--c) 35%, transparent);
+}
+
+.mt-btn-shadow:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--c) 88%, var(--mt-bg));
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--c) 45%, transparent);
+}
+
+.mt-btn-bordered {
+  background: transparent;
+  border-color: var(--c);
+  color: var(--c);
+}
+
+.mt-btn-bordered:hover:not(:disabled) {
+  background: var(--mt-surface-2);
+}
+
+.mt-btn-neutral.mt-btn-bordered {
+  border-color: var(--mt-border);
+}
+
+.mt-btn-flat {
+  background: transparent;
+  color: var(--c);
+}
+
+.mt-btn-flat:hover:not(:disabled) {
+  background: var(--mt-surface-2);
+}
+
+.mt-btn-light {
+  background: color-mix(in srgb, var(--c) 20%, var(--mt-surface));
+  color: color-mix(in srgb, var(--c) 70%, var(--mt-text));
+}
+
+.mt-btn-light:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--c) 30%, var(--mt-surface));
+}
+
+.mt-btn-xs {
+  padding: 3px 6px;
+  font-size: var(--mt-fs-xs);
+}
+
+.mt-btn-sm {
+  padding: 3px var(--mt-space-2);
+  font-size: var(--mt-fs-sm);
+}
+
+.mt-btn-md {
+  padding: 6px var(--mt-space-3);
+  font-size: var(--mt-fs-md);
+}
+
+.mt-btn-lg {
+  padding: var(--mt-space-2) var(--mt-space-4);
+  font-size: var(--mt-fs-lg);
+}
+
+.mt-btn-xl {
+  padding: 10px var(--mt-space-5);
+  font-size: var(--mt-fs-xl);
+}
+
+.mt-btn-spinner {
+  width: 1em;
+  height: 1em;
+  flex: none;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: mt-spin 600ms linear infinite;
+}
+
+@keyframes mt-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.mt-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mt-space-1);
+  min-width: 0;
+}
+
+.mt-field-label {
+  font-size: var(--mt-fs-xs);
+  color: var(--mt-muted);
+}
+
+.mt-input,
+.mt-textarea,
+.mt-select {
+  font: inherit;
+  font-size: var(--mt-fs-md);
+  color: var(--mt-text);
+  background: var(--mt-surface-2);
+  border: 1px solid var(--mt-border);
+  border-radius: var(--mt-radius);
+  padding: 6px var(--mt-space-2);
+  min-width: 0;
+  transition: border-color var(--mt-dur-fast) var(--mt-ease);
+}
+
+.mt-btn:focus-visible,
+.mt-input:focus-visible,
+.mt-textarea:focus-visible,
+.mt-select:focus-visible {
+  outline: 2px solid var(--mt-accent);
+  outline-offset: 2px;
+}
+
+.mt-input:focus-visible,
+.mt-textarea:focus-visible,
+.mt-select:focus-visible {
+  border-color: var(--mt-text);
+}
+
+.mt-textarea {
+  resize: vertical;
+  min-height: 64px;
+  font-family: inherit;
+}
+
+.mt-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--mt-space-1);
+  font-size: var(--mt-fs-xs);
+  line-height: var(--mt-lh);
+  padding: 0 6px;
+  border: 1px solid var(--mt-border);
+  border-radius: var(--mt-radius-sm);
+  background: transparent;
+  color: var(--mt-muted);
+  white-space: nowrap;
+}
+
+.mt-badge-accent {
+  border-color: var(--mt-text);
+  color: var(--mt-text);
+  font-weight: 500;
+}
+
+.mt-badge-danger {
+  border-color: var(--mt-danger);
+  color: var(--mt-danger);
+}

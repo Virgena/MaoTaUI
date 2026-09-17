@@ -1,0 +1,16 @@
+{
+  "name": "maotaui",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "",
+  "main": "src/index.tsx",
+  "types": "src/index.tsx",
+  "exports": {
+    ".": "./src/index.tsx",
+    "./styles.css": "./src/styles.css"
+  },
+  "peerDependencies": {
+    "react": ">=18"
+  }
+}

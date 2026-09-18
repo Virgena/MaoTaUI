@@ -1,10 +1,10 @@
 import type { InputHTMLAttributes, ReactNode } from "react";
 
-export interface TextFieldProps extends InputHTMLAttributes<HTMLInputElement> {
+export interface MaoTextFieldProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: ReactNode;
 }
 
-export function TextField({ label, className = "", ...rest }: TextFieldProps) {
+export function MaoTextField({ label, className = "", ...rest }: MaoTextFieldProps) {
   return (
     <label className={`mt-field ${className}`.trim()}>
       {label ? <span className="mt-field-label">{label}</span> : null}

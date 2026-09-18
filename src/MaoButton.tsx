@@ -10,13 +10,12 @@ export const BUTTON_COLORS = [
   "neutral",
 ] as const;
 export const BUTTON_VARIANTS = ["solid", "bordered", "light", "flat", "shadow"] as const;
-export const BUTTON_SIZES = ["xs", "sm", "md", "lg", "xl"] as const;
+export const BUTTON_SIZES = ["sm", "md", "lg"] as const;
 
 export type ButtonColor = (typeof BUTTON_COLORS)[number];
 export type ButtonVariant = (typeof BUTTON_VARIANTS)[number];
 export type ButtonSize = (typeof BUTTON_SIZES)[number];
 
-/** 旧名字 (variant=primary/ghost/danger): 那时候一个轴管"语气", 现在拆成 color + variant。 */
 type ButtonVariantOld = "primary" | "ghost" | "danger";
 
 const OLD_VARIANTS: Record<ButtonVariantOld, { color: ButtonColor; variant: ButtonVariant }> = {

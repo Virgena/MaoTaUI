@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { MaoIcon } from "../../../src/index.tsx";
 import { routes } from "../routes.ts";
 
 const HINT = /mac/i.test(navigator.userAgent) ? "⌘K" : "Ctrl K";
@@ -60,7 +59,7 @@ export function Search() {
   return (
     <>
       <label className="topbar-search">
-        <MaoIcon name="search" size={15} />
+        <mao-icon name="search" size={15} />
         <input
           type="search"
           value={query}
@@ -78,7 +77,7 @@ export function Search() {
         <div className="search-overlay" onPointerDown={() => setOpen(false)}>
           <div className="search-panel" onPointerDown={(event) => event.stopPropagation()}>
             <div className="search-head">
-              <MaoIcon name="search" size={18} />
+              <mao-icon name="search" size={18} />
               <input
                 ref={field}
                 className="search-field"
@@ -89,7 +88,7 @@ export function Search() {
                 onKeyDown={keys}
               />
               <button className="search-close" type="button" aria-label="关闭搜索" onClick={() => setOpen(false)}>
-                <MaoIcon name="close" size={16} />
+                <mao-icon name="close" size={16} />
               </button>
             </div>
             <div className="search-list">

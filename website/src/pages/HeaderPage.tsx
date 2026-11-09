@@ -1,81 +1,48 @@
+import { ApiProps } from "../components/ApiProps.tsx";
 import { Demo } from "../components/Demo.tsx";
-import { Props } from "../components/Props.tsx";
-import {
-  MaoButton,
-  MaoHeader,
-} from "../../../src/index.tsx";
 
 export function HeaderPage() {
   return (
     <>
       <h1>标题</h1>
-      <pre className="demo-code">import {"{ MaoHeader }"} from "maotaui";</pre>
+      <pre className="demo-code">import "maotaui";</pre>
 
       <h2>基础用法</h2>
-      <Demo code={`<MaoHeader name="组件库" />`}>
+      <Demo code={`<mao-header name="组件库"></mao-header>`}>
         <div className="demo-wide">
-          <MaoHeader name="组件库" />
+          <mao-header name="组件库" />
         </div>
       </Demo>
 
       <h2>层级</h2>
       <Demo
-        code={`<MaoHeader name="一级标题" scale="h1" />
-<MaoHeader name="二级标题" scale="h2" />
-<MaoHeader name="三级标题" scale="h3" />`}
+        code={`<mao-header name="一级标题" level="1"></mao-header>
+<mao-header name="二级标题" level="2"></mao-header>
+<mao-header name="三级标题" level="3"></mao-header>`}
       >
         <div className="demo-wide">
-          <MaoHeader name="一级标题" scale="h1" />
-          <MaoHeader name="二级标题" scale="h2" />
-          <MaoHeader name="三级标题" scale="h3" />
+          <mao-header name="一级标题" level="1" />
+          <mao-header name="二级标题" level="2" />
+          <mao-header name="三级标题" level="3" />
         </div>
       </Demo>
 
-      <h2>带描述</h2>
+      <h2>描述与操作区</h2>
       <Demo
-        code={`<MaoHeader
-  name="账号设置"
-  description="管理你的个人资料、安全选项与通知偏好。"
-  scale="h2"
-  end={<MaoButton size="sm" variant="bordered">编辑</MaoButton>}
-/>`}
+        code={`<mao-header name="账号设置" description="管理你的个人资料、安全选项与通知偏好。">
+  <mao-button slot="end" size="sm" variant="bordered">编辑</mao-button>
+</mao-header>`}
       >
         <div className="demo-wide">
-          <MaoHeader
-            name="账号设置"
-            description="管理你的个人资料、安全选项与通知偏好。"
-            scale="h2"
-            end={
-              <MaoButton size="sm" variant="bordered">
-                编辑
-              </MaoButton>
-            }
-          />
+          <mao-header name="账号设置" description="管理你的个人资料、安全选项与通知偏好。">
+            <mao-button slot="end" size="sm" variant="bordered">
+              编辑
+            </mao-button>
+          </mao-header>
         </div>
       </Demo>
 
-      <h2>属性</h2>
-      <Props
-        head={["属性", "类型", "默认值", "说明"]}
-        rows={[
-          ["name", "ReactNode", "—", "Title content"],
-          ["description", "ReactNode", "—", "One line under the title"],
-          ["scale", `"h1" | "h2" | "h3"`, `"h1"`, "Which heading tag to render; the font step follows it"],
-          ["end", "ReactNode", "—", "Right-hand slot (buttons, links), aligned to the title baseline"],
-          ["className", "string", `""`, "Extra classes on the wrapper"],
-        ]}
-      />
-
-      <h2>插槽</h2>
-      <Props
-        head={["插槽", "类型", "说明"]}
-        rows={[
-          ["name", "ReactNode", "Title content"],
-          ["description", "ReactNode", "Rendered as a <p> under the row"],
-          ["end", "ReactNode", "Pushed to the far end of the title row"],
-        ]}
-      />
+      <ApiProps tag="mao-header" />
     </>
   );
 }
-

@@ -1,4 +1,4 @@
-export const DEFAULT_SEED = "#5c7cfa";
+export const DEFAULT_SEED = "#a95d68";
 
 export type MonetTheme = "dark" | "light";
 

@@ -41,8 +41,19 @@ body,
   background: var(--mt-surface);
 }
 
-.topbar .brand {
-  margin: 0;
+.topbar > mao-brand {
+  flex: none;
+  margin-right: var(--mt-space-2);
+}
+
+.topbar > mao-brand::before {
+  width: 28px;
+  height: 28px;
+}
+
+.topbar > mao-brand::after {
+  font-size: var(--mt-fs-lg);
+  font-weight: 700;
 }
 
 .topbar .mt-btn {
@@ -238,15 +249,6 @@ body,
   top: var(--docs-topbar);
   height: calc(100vh - var(--docs-topbar));
   overflow: auto;
-}
-
-.brand-icon {
-  width: 28px;
-  height: 28px;
-}
-
-.brand-name {
-  font-size: var(--mt-fs-lg);
 }
 
 .sidebar h1 {

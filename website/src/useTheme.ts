@@ -1,14 +1,11 @@
-import { useEffect, useState } from "react";
-
-const THEME_KEY = "maotaui.theme";
+import { useState } from "react";
+import { currentTheme, toggleTheme } from "../../src/core/theme.ts";
+import type { Theme } from "../../src/core/theme.ts";
 
 export function useTheme() {
-  const [theme, setTheme] = useState<"dark" | "light">(() =>
-    localStorage.getItem(THEME_KEY) === "light" ? "light" : "dark",
-  );
-  useEffect(() => {
-    document.documentElement.dataset.theme = theme;
-    localStorage.setItem(THEME_KEY, theme);
-  }, [theme]);
-  return { theme, toggle: () => setTheme((now) => (now === "dark" ? "light" : "dark")) };
+  const [theme, setTheme] = useState<Theme>(() => currentTheme());
+  return {
+    theme,
+    toggle: () => setTheme(toggleTheme()),
+  };
 }

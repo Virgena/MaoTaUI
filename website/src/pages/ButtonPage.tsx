@@ -1,141 +1,108 @@
 import { useState } from "react";
+import { ApiProps } from "../components/ApiProps.tsx";
 import { Demo } from "../components/Demo.tsx";
-import { Props } from "../components/Props.tsx";
-import {
-  BUTTON_COLORS,
-  BUTTON_SIZES,
-  BUTTON_VARIANTS,
-  MaoButton,
-} from "../../../src/index.tsx";
+import { BUTTON_COLORS, BUTTON_SIZES, BUTTON_VARIANTS } from "./shared.ts";
 
 export function ButtonPage() {
-  const [clicked, setClicked] = useState(false);
+  const [clicks, setClicks] = useState(0);
   return (
     <>
       <h1>按钮</h1>
-      <pre className="demo-code">import {"{ MaoButton }"} from "maotaui";</pre>
+      <pre className="demo-code">import "maotaui";</pre>
 
       <h2>基础用法</h2>
       <Demo
-        code={`<MaoButton color="primary">Primary</MaoButton>
-<MaoButton color="secondary">Secondary</MaoButton>
-<MaoButton color="danger">Danger</MaoButton>`}
+        code={`<mao-button color="primary">Primary</mao-button>
+<mao-button color="secondary">Secondary</mao-button>
+<mao-button color="danger">Danger</mao-button>`}
       >
-        <MaoButton color="primary">Primary</MaoButton>
-        <MaoButton color="secondary">Secondary</MaoButton>
-        <MaoButton color="danger">Danger</MaoButton>
+        <mao-button color="primary">Primary</mao-button>
+        <mao-button color="secondary">Secondary</mao-button>
+        <mao-button color="danger">Danger</mao-button>
       </Demo>
 
       <h2>颜色</h2>
       <Demo
-        code={`{BUTTON_COLORS.map((color) => (
-  <MaoButton key={color} color={color}>
-    {color}
-  </MaoButton>
-))}`}
+        code={BUTTON_COLORS.map((color) => `<mao-button color="${color}">${color}</mao-button>`).join("\n")}
       >
         {BUTTON_COLORS.map((color) => (
-          <MaoButton key={color} color={color}>
+          <mao-button key={color} color={color}>
             {color}
-          </MaoButton>
+          </mao-button>
         ))}
       </Demo>
 
       <h2>变体</h2>
       <Demo
         code={BUTTON_VARIANTS.map(
-          (variant) => `<MaoButton color="primary" variant="${variant}">${variant}</MaoButton>`,
+          (variant) => `<mao-button color="primary" variant="${variant}">${variant}</mao-button>`,
         ).join("\n")}
       >
         {BUTTON_VARIANTS.map((variant) => (
-          <MaoButton key={variant} color="primary" variant={variant}>
+          <mao-button key={variant} color="primary" variant={variant}>
             {variant}
-          </MaoButton>
+          </mao-button>
         ))}
       </Demo>
 
       <h2>尺寸</h2>
-      <Demo code={BUTTON_SIZES.map((size) => `<MaoButton size="${size}">${size}</MaoButton>`).join("\n")}>
+      <Demo code={BUTTON_SIZES.map((size) => `<mao-button size="${size}">${size}</mao-button>`).join("\n")}>
         {BUTTON_SIZES.map((size) => (
-          <MaoButton key={size} size={size}>
+          <mao-button key={size} size={size}>
             {size}
-          </MaoButton>
+          </mao-button>
         ))}
       </Demo>
 
       <h2>状态与事件</h2>
-      <Demo code={`<MaoButton color="primary" loading>Submit</MaoButton>`}>
-        <MaoButton color="primary" loading>
-          Submit
-        </MaoButton>
+      <Demo code={`<mao-button color="primary" loading>处理中</mao-button>`}>
+        <mao-button color="primary" loading>
+          处理中
+        </mao-button>
+        <span className="demo-note">loading 时拦截点击</span>
       </Demo>
-      <Demo code={`<MaoButton color="primary" disabled>Disabled</MaoButton>`}>
-        <MaoButton color="primary" disabled>
-          Disabled
-        </MaoButton>
+      <Demo code={`<mao-button color="primary" disabled>不可点</mao-button>`}>
+        <mao-button color="primary" disabled>
+          不可点
+        </mao-button>
       </Demo>
-      <Demo code={`<MaoButton color="success" onClick={() => setClicked(true)}>Click me</MaoButton>`}>
-        <MaoButton color="success" onClick={() => setClicked(true)}>
-          Click me
-        </MaoButton>
-        {clicked && <span className="demo-note">Clicked!</span>}
+      <Demo code={`<mao-button color="success" onClick={...}>点我</mao-button>`}>
+        <mao-button color="success" onClick={() => setClicks((now) => now + 1)}>
+          点我
+        </mao-button>
+        <span className="demo-note">已点击 {clicks} 次</span>
       </Demo>
 
       <h2>作为链接</h2>
       <Demo
-        code={`<MaoButton href="#/button">Internal link</MaoButton>
-<MaoButton href="https://example.com">External link</MaoButton>`}
+        code={`<mao-button href="#/button">站内跳转</mao-button>
+<mao-button variant="bordered" href="https://example.com">外部链接</mao-button>`}
       >
-        <MaoButton href="#/button">Internal link</MaoButton>
-        <MaoButton href="https://example.com">External link</MaoButton>
+        <mao-button href="#/link">站内跳转</mao-button>
+        <mao-button variant="bordered" href="#/button">
+          回到本页
+        </mao-button>
       </Demo>
 
-      <h2>属性</h2>
-      <Props
-        head={["属性", "类型", "默认值", "说明"]}
-        rows={[
-          [
-            "color",
-            `"primary" | "secondary" | "success" | "warning" | "danger" | "info" | "neutral"`,
-            `"neutral"`,
-            "Hue. neutral is the inverted block — what MaoTa's own UI is painted with",
-          ],
-          [
-            "variant",
-            `"solid" | "bordered" | "light" | "flat" | "shadow"`,
-            `"solid"`,
-            "Material. shadow is the only variant carrying a shadow, tinted with its own hue",
-          ],
-          ["size", `"sm" | "md" | "lg"`, `"md"`, "Height and font step; sm is for toolbars and list rows"],
-          ["loading", "boolean", "false", "Prepends a spinner and disables the button, so clicks don't fire"],
-          [
-            "href",
-            "string",
-            "—",
-            `Renders an <a> instead; external URLs get target="_blank". loading / disabled don't apply on this path`,
-          ],
-          ["disabled", "boolean", "false", "Native disabled state: reduced opacity + not-allowed"],
-        ]}
-      />
+      <h2>整行与图标</h2>
+      <Demo
+        code={`<mao-button block color="primary">整行按钮</mao-button>
+<mao-button icon aria-label="搜索"><mao-icon name="search" /></mao-button>`}
+      >
+        <div className="demo-col" style={{ width: "100%", maxWidth: 360 }}>
+          <mao-button block color="primary">
+            整行按钮
+          </mao-button>
+        </div>
+        <mao-button icon aria-label="搜索">
+          <mao-icon name="search" />
+        </mao-button>
+        <mao-button icon aria-label="更多">
+          <mao-icon name="more" />
+        </mao-button>
+      </Demo>
 
-      <h2>事件</h2>
-      <Props
-        head={["事件", "回调参数", "说明"]}
-        rows={[
-          ["onClick", "MouseEvent", "Fires on click; not fired while loading / disabled"],
-          ["onFocus / onBlur", "FocusEvent", "Native focus events; reachable with Tab, focus ring shows in both themes"],
-        ]}
-      />
-
-      <h2>插槽</h2>
-      <Props
-        head={["插槽", "类型", "说明"]}
-        rows={[
-          ["children", "ReactNode", "Button content. children is the only slot; there are no named slots"],
-          ["—", "—", "The spinner shown while loading is added automatically"],
-        ]}
-      />
+      <ApiProps tag="mao-button" />
     </>
   );
 }
-

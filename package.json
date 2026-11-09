@@ -1,19 +1,27 @@
 {
   "name": "maotaui",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "type": "module",
-  "description": "",
-  "main": "src/index.tsx",
-  "types": "src/index.tsx",
+  "description": "现代无头 Web Components 组件库: SSR 安全、零水合报错、设计令牌、内置图标、暗色模式。",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "sideEffects": ["**/*.css", "./src/index.ts", "./src/elements/*.ts"],
   "exports": {
-    ".": "./src/index.tsx",
+    ".": "./src/index.ts",
+    "./core": "./src/core/index.ts",
+    "./icons": "./src/core/icons.ts",
+    "./registry": "./src/core/registry.ts",
     "./styles.css": "./src/styles.css"
   },
-  "peerDependencies": {
-    "react": ">=18"
+  "scripts": {
+    "dev": "pnpm --filter maotaui-website dev",
+    "build": "pnpm --filter maotaui-website build",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "check": "node --experimental-strip-types website/check-contrast.ts",
+    "ssr": "node --experimental-strip-types scripts/ssr-smoke.ts"
   },
-  "dependencies": {
-    "lucide-react": "^1.46.0"
+  "devDependencies": {
+    "typescript": "^5.9.3"
   }
 }

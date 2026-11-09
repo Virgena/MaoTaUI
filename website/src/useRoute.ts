@@ -9,5 +9,5 @@ export function useRoute() {
     return () => removeEventListener("hashchange", sync);
   }, []);
   const id = hash.replace(/^\//, "");
-  return routes.find((page) => page.id === id) ?? routes[0];
+  return routes.find((page) => page.id === id) ?? routes[0]!;
 }

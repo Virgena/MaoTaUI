@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { DEFAULT_SEED, contrast, luminance, monetPalette, monetScale } from "../src/color.ts";
-import type { MonetTheme } from "../src/color.ts";
+import { DEFAULT_SEED, contrast, luminance, monetPalette, monetScale } from "../src/core/color.ts";
+import type { MonetTheme } from "../src/core/color.ts";
 
 const css = readFileSync(new URL("../src/styles.css", import.meta.url), "utf8").replace(
   /\/\*[\s\S]*?\*\//g,
@@ -22,8 +22,8 @@ function tokens(selector: string): Record<string, string> {
 
 const base = tokens(":root");
 const themes: Array<[string, MonetTheme, Record<string, string>]> = [
-  ["暗色", "dark", base],
-  ["亮色", "light", { ...base, ...tokens(':root[data-theme="light"]') }],
+  ["亮色", "light", base],
+  ["暗色", "dark", { ...base, ...tokens(':root[data-theme="dark"]') }],
 ];
 
 const MIN = 4.5;

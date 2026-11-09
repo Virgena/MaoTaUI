@@ -1,72 +1,52 @@
+import { useState } from "react";
+import { ApiProps } from "../components/ApiProps.tsx";
 import { Demo } from "../components/Demo.tsx";
-import { Props } from "../components/Props.tsx";
-import {
-  BUTTON_COLORS,
-  BUTTON_SIZES,
-  BUTTON_VARIANTS,
-  MaoButton,
-  MaoCopy,
-} from "../../../src/index.tsx";
+import { useMaoEvents } from "../useMaoEvents.ts";
+import { BUTTON_COLORS, BUTTON_SIZES } from "./shared.ts";
 
 export function CopyPage() {
+  const [last, setLast] = useState("");
+  const ref = useMaoEvents<HTMLDivElement>({
+    "mt-copy": (event) => setLast(String(event.detail.text ?? "")),
+  });
+
   return (
     <>
       <h1>复制</h1>
-      <pre className="demo-code">import {"{ MaoCopy }"} from "maotaui";</pre>
+      <pre className="demo-code">import "maotaui";</pre>
 
       <h2>基础用法</h2>
-      <Demo code={`<MaoCopy text="https://example.com/maota" name="Copy the URL" />`}>
-        <MaoCopy text="https://example.com/maota" name="Copy the URL" />
-      </Demo>
-
-      <h2>自定义已复制文案</h2>
-      <Demo code={`<MaoCopy text="maota@example.com" name="复制邮箱" copiedText="复制成功!" />`}>
-        <MaoCopy text="maota@example.com" name="复制邮箱" copiedText="复制成功!" />
-      </Demo>
+      <div ref={ref}>
+        <Demo
+          code={`<mao-copy text="pnpm add maotaui" label="复制命令"></mao-copy>
+<mao-copy text="maota@example.com" label="复制邮箱" copied-label="已复制!"></mao-copy>`}
+        >
+          <mao-copy text="pnpm add maotaui" label="复制命令" />
+          <mao-copy text="maota@example.com" label="复制邮箱" copied-label="已复制!" />
+        </Demo>
+        {last ? <p className="demo-note">mt-copy: {last}</p> : null}
+      </div>
 
       <h2>颜色</h2>
-      <Demo
-        code={`{BUTTON_COLORS.map((color) => (
-  <MaoCopy key={color} text={color} name={color} color={color} />
-))}`}
-      >
+      <Demo code={BUTTON_COLORS.map((color) => `<mao-copy color="${color}" text="${color}" label="${color}" />`).join("\n")}>
         {BUTTON_COLORS.map((color) => (
-          <MaoCopy key={color} text={color} name={color} color={color} />
+          <mao-copy key={color} color={color} text={color} label={color} />
         ))}
       </Demo>
 
-      <h2>变体</h2>
-      <Demo
-        code={`{BUTTON_VARIANTS.map((variant) => (
-  <MaoCopy key={variant} text={variant} name={variant} variant={variant} />
-))}`}
-      >
-        {BUTTON_VARIANTS.map((variant) => (
-          <MaoCopy key={variant} text={variant} name={variant} variant={variant} />
-        ))}
+      <h2>实心外观</h2>
+      <Demo code={`<mao-copy variant="solid" text="pnpm add maotaui" label="复制安装命令" />`}>
+        <mao-copy variant="solid" text="pnpm add maotaui" label="复制安装命令" />
       </Demo>
 
       <h2>尺寸</h2>
-      <Demo code={BUTTON_SIZES.map((size) => `<MaoCopy text="${size}" name="${size}" size="${size}" />`).join("\n")}>
+      <Demo code={BUTTON_SIZES.map((size) => `<mao-copy size="${size}" text="${size}" label="${size}" />`).join("\n")}>
         {BUTTON_SIZES.map((size) => (
-          <MaoCopy key={size} text={size} name={size} size={size} />
+          <mao-copy key={size} size={size} text={size} label={size} />
         ))}
       </Demo>
 
-      <h2>属性</h2>
-      <Props
-        head={["属性", "类型", "默认值", "说明"]}
-        rows={[
-          ["text *", "string", "—", "Text pushed to the clipboard"],
-          ["name", "string", `""`, "Button label. Empty renders an icon-only button"],
-          ["copiedText", "string", `"Copied"`, "Label shown briefly after a successful copy"],
-          ["color", "ButtonColor", `"primary"`, "Same as MaoButton"],
-          ["variant", "ButtonVariant", `"light"`, "Same as MaoButton"],
-          ["size", "ButtonSize", `"md"`, "Same as MaoButton"],
-          ["className", "string", `""`, "Extra classes on the button, alongside the copy-is-on state"],
-        ]}
-      />
+      <ApiProps tag="mao-copy" />
     </>
   );
 }
-

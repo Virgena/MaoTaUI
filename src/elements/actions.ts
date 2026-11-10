@@ -5,6 +5,8 @@ import { iconSvg } from "../core/icons.ts";
 
 /** `<mao-link>`：light DOM 链接。 */
 export class MaoLink extends MaoElement {
+  #externalIcon: SVGSVGElement | null = null;
+
   static get observedAttributes(): string[] {
     return ["href", "target", "color", "underline", "size", "external"];
   }
@@ -22,12 +24,30 @@ export class MaoLink extends MaoElement {
     ["sm", "md", "lg"].forEach((token) => this.classList.toggle(`mt-link-${token}`, token === size));
     this.classList.toggle("mt-link-hover", underline === "hover");
     this.classList.toggle("mt-link-none", underline === "none");
-    this.classList.toggle("mt-link-external", this.bool("external"));
+    const external = this.bool("external");
+    this.classList.toggle("mt-link-external", external);
+    this.#syncExternalIcon(external);
     const color = this.getAttribute("color");
     if (color) this.style.setProperty("--c", `var(--mt-color-${color})`);
     else this.style.removeProperty("--c");
     this.setAttribute("role", "link");
     this.tabIndex = 0;
+  }
+
+  #syncExternalIcon(external: boolean): void {
+    if (!external) {
+      this.#externalIcon?.remove();
+      this.#externalIcon = null;
+      return;
+    }
+    if (this.#externalIcon?.isConnected) return;
+    const holder = document.createElement("span");
+    holder.innerHTML = iconSvg("arrow-up-right", { size: 16, strokeWidth: 2.2 });
+    const svg = holder.firstElementChild as SVGSVGElement | null;
+    if (!svg) return;
+    svg.setAttribute("class", "mt-link-icon");
+    this.#externalIcon = svg;
+    this.append(svg);
   }
 
   #onClick = (event: Event): void => {

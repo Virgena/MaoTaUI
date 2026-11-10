@@ -49,7 +49,7 @@ export function ButtonGroupPage() {
         code={`<mao-button-group orientation="vertical" aria-label="图片工具">
   <mao-button variant="bordered"><mao-icon name="search" />放大</mao-button>
   <mao-button variant="bordered"><mao-icon name="minus" />缩小</mao-button>
-  <mao-button variant="bordered"><mao-icon name="refresh" />旋转</mao-button>
+  <mao-button variant="bordered"><mao-icon name="refresh-cw" />旋转</mao-button>
 </mao-button-group>`}
       >
         <mao-button-group orientation="vertical" aria-label="图片工具">
@@ -62,7 +62,7 @@ export function ButtonGroupPage() {
             缩小
           </mao-button>
           <mao-button variant="bordered">
-            <mao-icon name="refresh" />
+            <mao-icon name="refresh-cw" />
             旋转
           </mao-button>
         </mao-button-group>

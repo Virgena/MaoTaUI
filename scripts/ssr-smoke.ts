@@ -38,6 +38,8 @@ assert.equal(typeof customElements, "undefined", "导入库后不应注册元素
 const first = iconSvg("check");
 assert.equal(first, iconSvg("check"), "iconSvg 必须是纯函数");
 assert.ok(first.includes("<svg"), "iconSvg 应返回 SVG 字符串");
+assert.ok(iconSvg("chevron-down").includes("<path"), "Lucide 图标应正常生成");
+assert.equal(iconSvg("not-an-icon"), "", "未知图标应返回空字符串");
 assert.ok(ICON_NAMES.length >= 40, "内置图标数量不足");
 
 // registry 是单一事实源：标签唯一、mao- 前缀、与元素注册表一一对应。

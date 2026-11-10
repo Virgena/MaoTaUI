@@ -6,7 +6,11 @@
   "description": "现代无头 Web Components 组件库: SSR 安全、零水合报错、设计令牌、内置图标、暗色模式。",
   "main": "src/index.ts",
   "types": "src/index.ts",
-  "sideEffects": ["**/*.css", "./src/index.ts", "./src/elements/*.ts"],
+  "sideEffects": [
+    "**/*.css",
+    "./src/index.ts",
+    "./src/elements/*.ts"
+  ],
   "exports": {
     ".": "./src/index.ts",
     "./core": "./src/core/index.ts",
@@ -15,13 +19,19 @@
     "./styles.css": "./src/styles.css"
   },
   "scripts": {
+    "icons": "node --experimental-strip-types scripts/build-icons.ts",
+    "predev": "pnpm icons",
     "dev": "pnpm --filter maotaui-website dev",
+    "prebuild": "pnpm icons",
     "build": "pnpm --filter maotaui-website build",
+    "pretypecheck": "pnpm icons",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "check": "node --experimental-strip-types website/check-contrast.ts",
+    "pressr": "pnpm icons",
     "ssr": "node --experimental-strip-types scripts/ssr-smoke.ts"
   },
   "devDependencies": {
+    "@iconify-json/lucide": "^1.2.152",
     "typescript": "^5.9.3"
   }
 }

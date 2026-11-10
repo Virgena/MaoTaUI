@@ -33,12 +33,12 @@ export function ReactionPage() {
         code={`<mao-reaction count="42" icon="star" color="warning" label="收藏" />
 <mao-reaction count="7" active icon="bookmark" color="primary" label="书签" />
 <mao-reaction count="15" icon="heart" color="info" label="喜欢" />
-<mao-reaction count="34" icon="chat" color="neutral" label="评论" />`}
+<mao-reaction count="34" icon="message-square" color="neutral" label="评论" />`}
       >
         <mao-reaction count={42} icon="star" color="warning" label="收藏" />
         <mao-reaction count={7} active icon="bookmark" color="primary" label="书签" />
         <mao-reaction count={15} icon="heart" color="info" label="喜欢" />
-        <mao-reaction count={34} icon="chat" color="neutral" label="评论" />
+        <mao-reaction count={34} icon="message-square" color="neutral" label="评论" />
       </Demo>
 
       <h2>尺寸</h2>

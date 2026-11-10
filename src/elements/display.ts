@@ -20,7 +20,7 @@ export class MaoIcon extends MaoElement {
     box.innerHTML = iconSvg(this.attr("name"), {
       size: this.attr("size", "16"),
       label: this.attr("label") || undefined,
-      strokeWidth: this.num("stroke-width", 1.5),
+      strokeWidth: this.num("stroke-width", 2),
     });
   }
 }

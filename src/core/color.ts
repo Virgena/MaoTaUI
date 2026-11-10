@@ -8,18 +8,17 @@ const MIN_RATIO = 4.5;
 const ON_DARK = "#0f1015";
 const ON_LIGHT = "#ffffff";
 
-interface Sl {
-  s: number;
-  l: number;
-}
-
 function clamp(value: number, min: number, max: number): number {
   return Math.min(max, Math.max(min, value));
 }
 
-function seedHsl(seed: string): { h: number; s: number; l: number } {
+function hexOf(seed: string): string {
   const matched = /^#?([0-9a-f]{6})$/i.exec(seed.trim());
-  const hex = (matched?.[1] ?? DEFAULT_SEED.slice(1)).toLowerCase();
+  return `#${(matched?.[1] ?? DEFAULT_SEED.slice(1)).toLowerCase()}`;
+}
+
+function seedHsl(seed: string): { h: number; s: number; l: number } {
+  const hex = hexOf(seed).slice(1);
   const channel = (i: number) => parseInt(hex.slice(i * 2, i * 2 + 2), 16) / 255;
   const r = channel(0);
   const g = channel(1);
@@ -83,22 +82,22 @@ export function toneStyle(color: string): Record<string, string> {
   return { "--c": color, "--c-fill": color, "--on-c": on };
 }
 
-const NEUTRAL: Record<MonetTheme, Record<"bg" | "surface" | "surface2" | "border" | "text" | "muted", Sl>> = {
-  dark: {
-    bg: { s: 16, l: 6.5 },
-    surface: { s: 15, l: 10 },
-    surface2: { s: 14, l: 13.5 },
-    border: { s: 13, l: 19 },
-    text: { s: 10, l: 93 },
-    muted: { s: 9, l: 60 },
-  },
+const NEUTRAL_HEX: Record<MonetTheme, Record<"bg" | "surface" | "surface2" | "border" | "text" | "muted", string>> = {
   light: {
-    bg: { s: 32, l: 95.5 },
-    surface: { s: 22, l: 100 },
-    surface2: { s: 26, l: 93.5 },
-    border: { s: 20, l: 87 },
-    text: { s: 10, l: 10 },
-    muted: { s: 10, l: 40 },
+    bg: "#f6f3ed",
+    surface: "#fcfaf6",
+    surface2: "#eee9e0",
+    border: "#ddd9d5",
+    text: "#282622",
+    muted: "#6f6860",
+  },
+  dark: {
+    bg: "#1e1d1a",
+    surface: "#272521",
+    surface2: "#302d28",
+    border: "#373531",
+    text: "#eee9df",
+    muted: "#b0a99d",
   },
 };
 
@@ -134,16 +133,17 @@ function pickTone(hue: number, sat: number, around: string[], from: number, to: 
 export function monetPalette(seed: string = DEFAULT_SEED, theme: MonetTheme = "dark"): MonetPalette {
   const root = seedHsl(seed);
   const tint = clamp(root.s / 45, 0, 1);
-  const tinted = (sl: Sl) => rgbHex(root.h, sl.s * tint, sl.l);
-  const n = NEUTRAL[theme];
-  const bg = tinted(n.bg);
-  const surface = tinted(n.surface);
-  const surface2 = tinted(n.surface2);
-  const border = tinted(n.border);
-  const text = tinted(n.text);
-  const muted = tinted(n.muted);
+  const n = NEUTRAL_HEX[theme];
+  const bg = n.bg;
+  const surface = n.surface;
+  const surface2 = n.surface2;
+  const border = n.border;
+  const text = n.text;
+  const muted = n.muted;
   const dangerSoft = theme === "dark" ? rgbHex(DANGER_HUE, 30, 13) : rgbHex(DANGER_HUE, 70, 96);
   const onDark = rgbHex(root.h, 16 * tint, 7);
+  const accent = theme === "light" ? hexOf(seed) : rgbHex(root.h + 3, clamp(root.s * 1.4, 0, 100), 68);
+  const onAccent = onFill(accent) ?? (theme === "dark" ? ON_DARK : ON_LIGHT);
 
   const around = [bg, surface, surface2, dangerSoft, theme === "dark" ? onDark : ON_LIGHT];
   const inkFor = (hue: number, sat: number) =>
@@ -170,6 +170,9 @@ export function monetPalette(seed: string = DEFAULT_SEED, theme: MonetTheme = "d
     "--mt-muted": muted,
   };
 
+  let primaryFill = accent;
+  let primaryOn = onAccent;
+
   for (const name of Object.keys(HUE)) {
     const { h: hue, s: sat } = hueSat(seed, name);
     const ink = inkFor(hue, sat);
@@ -177,13 +180,22 @@ export function monetPalette(seed: string = DEFAULT_SEED, theme: MonetTheme = "d
     base[`--mt-color-${name}`] = ink;
     base[`--mt-fill-${name}`] = fill;
     base[`--mt-on-${name}`] = on;
+    if (name === "primary" && theme === "dark") {
+      primaryFill = fill;
+      primaryOn = on;
+    }
   }
 
   base["--mt-color-neutral"] = base["--mt-color-primary"]!;
-  base["--mt-fill-neutral"] = base["--mt-fill-primary"]!;
-  base["--mt-on-neutral"] = base["--mt-on-primary"]!;
-  base["--mt-accent"] = base["--mt-fill-primary"]!;
-  base["--mt-on-accent"] = base["--mt-on-primary"]!;
+  base["--mt-fill-primary"] = primaryFill;
+  base["--mt-fill-neutral"] = primaryFill;
+  base["--mt-on-primary"] = primaryOn;
+  base["--mt-on-neutral"] = primaryOn;
+  base["--mt-accent"] = accent;
+  base["--mt-on-accent"] = onAccent;
+  base["--mt-color-secondary"] = text;
+  base["--mt-fill-secondary"] = text;
+  base["--mt-on-secondary"] = bg;
   base["--mt-danger"] = base["--mt-color-danger"]!;
   base["--mt-danger-soft"] = dangerSoft;
   return base;

@@ -267,7 +267,7 @@ export const COMPONENT_REGISTRY: readonly ComponentMeta[] = [
       attr("name", "IconName", "图标名，见 core/icons.ts"),
       attr("size", "number | string", "尺寸", "16"),
       attr("label", "string", "无障碍标签，省略则 aria-hidden"),
-      attr("stroke-width", "number", "描边宽度", "1.5"),
+      attr("stroke-width", "number", "描边宽度", "2"),
     ],
     events: [],
     slots: [],

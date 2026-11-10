@@ -28,8 +28,8 @@ export function IconPage() {
       <Demo
         code={`<span style={{ color: "var(--mt-color-primary)" }}><mao-icon name="info" size="20" /></span>
 <span style={{ color: "var(--mt-color-success)" }}><mao-icon name="check" size="20" /></span>
-<span style={{ color: "var(--mt-color-warning)" }}><mao-icon name="alert" size="20" /></span>
-<span style={{ color: "var(--mt-color-danger)" }}><mao-icon name="close" size="20" /></span>
+<span style={{ color: "var(--mt-color-warning)" }}><mao-icon name="triangle-alert" size="20" /></span>
+<span style={{ color: "var(--mt-color-danger)" }}><mao-icon name="x" size="20" /></span>
 <mao-icon name="heart" size="20" stroke-width="2" />`}
       >
         <span style={{ color: "var(--mt-color-primary)" }}>
@@ -39,10 +39,10 @@ export function IconPage() {
           <mao-icon name="check" size={20} />
         </span>
         <span style={{ color: "var(--mt-color-warning)" }}>
-          <mao-icon name="alert" size={20} />
+          <mao-icon name="triangle-alert" size={20} />
         </span>
         <span style={{ color: "var(--mt-color-danger)" }}>
-          <mao-icon name="close" size={20} />
+          <mao-icon name="x" size={20} />
         </span>
         <mao-icon name="heart" size={20} stroke-width={2} />
       </Demo>

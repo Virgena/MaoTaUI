@@ -88,7 +88,7 @@ export function Search() {
                 onKeyDown={keys}
               />
               <button className="search-close" type="button" aria-label="关闭搜索" onClick={() => setOpen(false)}>
-                <mao-icon name="close" size={16} />
+                <mao-icon name="x" size={16} />
               </button>
             </div>
             <div className="search-list">

@@ -5,13 +5,23 @@ import { Props } from "../components/Props.tsx";
 
 const ROLES = ["primary", "secondary", "info", "success", "warning", "danger"] as const;
 
-const SURFACES: Array<[string, string]> = [
-  ["bg", "页面底色"],
-  ["surface", "卡片表面"],
-  ["surface-2", "次级表面"],
-  ["border", "描边"],
-  ["text", "正文墨色"],
-  ["muted", "次要文字"],
+const FOUNDATIONS: Array<[string, string, string]> = [
+  ["--mt-bg", "纸面", "var(--mt-text)"],
+  ["--mt-surface", "浮层表面", "var(--mt-text)"],
+  ["--mt-surface-2", "次级表面", "var(--mt-text)"],
+  ["--mt-border", "细描边", "var(--mt-text)"],
+  ["--mt-text", "正文墨色", "var(--mt-bg)"],
+  ["--mt-muted", "次要文字", "var(--mt-bg)"],
+  ["--mt-faint", "最弱文字", "var(--mt-bg)"],
+];
+
+const SUPPORTS: Array<[string, string, string]> = [
+  ["--mt-accent", "强调", "var(--mt-on-accent)"],
+  ["--mt-accent-soft", "强调软背景", "var(--mt-accent)"],
+  ["--mt-sage", "鼠尾草绿", "var(--mt-bg)"],
+  ["--mt-sage-soft", "鼠尾草软背景", "var(--mt-sage)"],
+  ["--mt-blue", "雾蓝", "var(--mt-bg)"],
+  ["--mt-blue-soft", "雾蓝软背景", "var(--mt-blue)"],
 ];
 
 function readTokens(): Record<string, string> {
@@ -38,6 +48,32 @@ export function ColorsPage() {
         所有颜色来自 CSS 变量（设计令牌），亮暗主题各一套。切换顶栏主题即可看到实时变化。
       </p>
 
+      <h2>基础色板</h2>
+      <p className="demo-note">纸面、表面与墨色固定为参考稿的暖色，不随强调色种子变化。</p>
+      <div className="tone-grid">
+        {FOUNDATIONS.map(([token, label, fg]) => (
+          <div className="tone" key={token} style={{ background: `var(${token})`, color: fg }}>
+            <span className="tone-aa">Aa</span>
+            <span className="tone-name">{label}</span>
+            <em>{token.replace("--mt-", "")}</em>
+            <em>{value(token)}</em>
+          </div>
+        ))}
+      </div>
+
+      <h2>强调与支持</h2>
+      <p className="demo-note">强调色只用于需要被注意的动作与状态；鼠尾草绿和雾蓝承担成功与信息语境。</p>
+      <div className="tone-grid">
+        {SUPPORTS.map(([token, label, fg]) => (
+          <div className="tone" key={token} style={{ background: `var(${token})`, color: fg }}>
+            <span className="tone-aa">Aa</span>
+            <span className="tone-name">{label}</span>
+            <em>{token.replace("--mt-", "")}</em>
+            <em>{value(token)}</em>
+          </div>
+        ))}
+      </div>
+
       <h2>语义色</h2>
       <div className="tone-grid">
         {ROLES.map((role) => (
@@ -49,17 +85,6 @@ export function ColorsPage() {
             <span className="tone-aa">Aa</span>
             <span className="tone-name">{role}</span>
             <em>{value(`--mt-fill-${role}`)}</em>
-          </div>
-        ))}
-      </div>
-
-      <h2>表面与文字</h2>
-      <div className="surface-grid">
-        {SURFACES.map(([name, label]) => (
-          <div className="surface" key={name} style={{ background: `var(--mt-${name})` }}>
-            <span className="surface-token">--mt-{name}</span>
-            <span className="surface-label">{label}</span>
-            <em>{value(`--mt-${name}`)}</em>
           </div>
         ))}
       </div>

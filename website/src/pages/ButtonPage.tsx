@@ -98,7 +98,7 @@ export function ButtonPage() {
           <mao-icon name="search" />
         </mao-button>
         <mao-button icon aria-label="更多">
-          <mao-icon name="more" />
+          <mao-icon name="ellipsis" />
         </mao-button>
       </Demo>
 

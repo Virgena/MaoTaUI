@@ -1,41 +1,41 @@
 :root {
   color-scheme: light;
 
-  --mt-bg: #f6f1f2;
-  --mt-surface: #ffffff;
-  --mt-surface-2: #f1ebec;
-  --mt-border: #e2d9db;
-  --mt-text: #1b1818;
-  --mt-muted: #6d5f61;
-  --mt-color-primary: #a64f5c;
-  --mt-fill-primary: #ba6e79;
-  --mt-on-primary: #0f1015;
-  --mt-color-secondary: #7c6746;
-  --mt-fill-secondary: #b19a76;
-  --mt-on-secondary: #0f1015;
-  --mt-color-info: #96557f;
+  --mt-bg: #f6f3ed;
+  --mt-surface: #fcfaf6;
+  --mt-surface-2: #eee9e0;
+  --mt-border: #ddd9d5;
+  --mt-text: #282622;
+  --mt-muted: #6f6860;
+  --mt-color-primary: #a24e5a;
+  --mt-fill-primary: #a95d68;
+  --mt-on-primary: #ffffff;
+  --mt-color-secondary: #282622;
+  --mt-fill-secondary: #282622;
+  --mt-on-secondary: #f6f3ed;
+  --mt-color-info: #92537c;
   --mt-fill-info: #b1769c;
   --mt-on-info: #0f1015;
-  --mt-color-success: #1f7a49;
+  --mt-color-success: #1e7647;
   --mt-fill-success: #54d490;
   --mt-on-success: #0f1015;
   --mt-color-warning: #8b6009;
   --mt-fill-warning: #f2b336;
   --mt-on-warning: #0f1015;
-  --mt-color-danger: #ba4426;
+  --mt-color-danger: #b64225;
   --mt-fill-danger: #db694d;
   --mt-on-danger: #0f1015;
-  --mt-color-neutral: #a64f5c;
-  --mt-fill-neutral: #ba6e79;
-  --mt-on-neutral: #0f1015;
-  --mt-accent: #ba6e79;
-  --mt-on-accent: #0f1015;
-  --mt-danger: #ba4426;
+  --mt-color-neutral: #a24e5a;
+  --mt-fill-neutral: #a95d68;
+  --mt-on-neutral: #ffffff;
+  --mt-accent: #a95d68;
+  --mt-on-accent: #ffffff;
+  --mt-danger: #b64225;
   --mt-danger-soft: #fcf1ee;
 
   /* Stillform 氛围令牌 */
-  --mt-faint: #a2938f;
-  --mt-line-strong: #cbbfc0;
+  --mt-faint: #a59e92;
+  --mt-line-strong: #cdcac4;
   --mt-accent-soft: #f1e2e2;
   --mt-sage: #73816e;
   --mt-sage-soft: #e7ebe3;
@@ -80,19 +80,19 @@
 :root[data-theme="dark"] {
   color-scheme: dark;
 
-  --mt-bg: #120f0f;
-  --mt-surface: #1c1718;
-  --mt-surface-2: #261f20;
-  --mt-border: #352c2d;
-  --mt-text: #eeecec;
-  --mt-muted: #9f9395;
-  --mt-color-primary: #bd757f;
+  --mt-bg: #1e1d1a;
+  --mt-surface: #272521;
+  --mt-surface-2: #302d28;
+  --mt-border: #373531;
+  --mt-text: #eee9df;
+  --mt-muted: #b0a99d;
+  --mt-color-primary: #c4838c;
   --mt-fill-primary: #b15d69;
   --mt-on-primary: #ffffff;
-  --mt-color-secondary: #a3875c;
-  --mt-fill-secondary: #89714e;
-  --mt-on-secondary: #ffffff;
-  --mt-color-info: #b1769c;
+  --mt-color-secondary: #eee9df;
+  --mt-fill-secondary: #eee9df;
+  --mt-on-secondary: #1e1d1a;
+  --mt-color-info: #bb87a8;
   --mt-fill-info: #a5608c;
   --mt-on-info: #ffffff;
   --mt-color-success: #33cc7a;
@@ -101,45 +101,46 @@
   --mt-color-warning: #f0a50f;
   --mt-fill-warning: #9e6d0a;
   --mt-on-warning: #ffffff;
-  --mt-color-danger: #da6649;
+  --mt-color-danger: #de785e;
   --mt-fill-danger: #cb4a2a;
   --mt-on-danger: #ffffff;
-  --mt-color-neutral: #bd757f;
+  --mt-color-neutral: #c4838c;
   --mt-fill-neutral: #b15d69;
   --mt-on-neutral: #ffffff;
-  --mt-accent: #b15d69;
-  --mt-on-accent: #ffffff;
-  --mt-danger: #da6649;
+  --mt-accent: #d08a91;
+  --mt-on-accent: #0f1015;
+  --mt-danger: #de785e;
   --mt-danger-soft: #2b1b17;
 
-  --mt-faint: #7d7173;
-  --mt-line-strong: #4a3f40;
-  --mt-accent-soft: #2d2022;
-  --mt-sage: #9aa894;
-  --mt-sage-soft: #222722;
-  --mt-blue: #98a9b6;
-  --mt-blue-soft: #212729;
-  --mt-shadow: 0 16px 42px rgb(0 0 0 / 0.34), 0 2px 8px rgb(0 0 0 / 0.24);
-  --mt-shadow-overlay: 0 18px 48px rgb(0 0 0 / 0.5);
+  --mt-faint: #827b70;
+  --mt-line-strong: #48463f;
+  --mt-accent-soft: #422f31;
+  --mt-sage: #a4b09b;
+  --mt-sage-soft: #30382f;
+  --mt-blue: #a2b5c1;
+  --mt-blue-soft: #2c353b;
+  --mt-shadow: 0 18px 48px rgb(0 0 0 / 0.2);
+  --mt-shadow-overlay: 0 18px 48px rgb(0 0 0 / 0.34);
 }
 
+/* 暗色兜底：未显式设置 data-theme 时跟随系统 */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme]) {
     color-scheme: dark;
 
-    --mt-bg: #120f0f;
-    --mt-surface: #1c1718;
-    --mt-surface-2: #261f20;
-    --mt-border: #352c2d;
-    --mt-text: #eeecec;
-    --mt-muted: #9f9395;
-    --mt-color-primary: #bd757f;
+    --mt-bg: #1e1d1a;
+    --mt-surface: #272521;
+    --mt-surface-2: #302d28;
+    --mt-border: #373531;
+    --mt-text: #eee9df;
+    --mt-muted: #b0a99d;
+    --mt-color-primary: #c4838c;
     --mt-fill-primary: #b15d69;
     --mt-on-primary: #ffffff;
-    --mt-color-secondary: #a3875c;
-    --mt-fill-secondary: #89714e;
-    --mt-on-secondary: #ffffff;
-    --mt-color-info: #b1769c;
+    --mt-color-secondary: #eee9df;
+    --mt-fill-secondary: #eee9df;
+    --mt-on-secondary: #1e1d1a;
+    --mt-color-info: #bb87a8;
     --mt-fill-info: #a5608c;
     --mt-on-info: #ffffff;
     --mt-color-success: #33cc7a;
@@ -148,25 +149,26 @@
     --mt-color-warning: #f0a50f;
     --mt-fill-warning: #9e6d0a;
     --mt-on-warning: #ffffff;
-    --mt-color-danger: #da6649;
+    --mt-color-danger: #de785e;
     --mt-fill-danger: #cb4a2a;
     --mt-on-danger: #ffffff;
-    --mt-color-neutral: #bd757f;
+    --mt-color-neutral: #c4838c;
     --mt-fill-neutral: #b15d69;
     --mt-on-neutral: #ffffff;
-    --mt-accent: #b15d69;
-    --mt-on-accent: #ffffff;
-    --mt-danger: #da6649;
+    --mt-accent: #d08a91;
+    --mt-on-accent: #0f1015;
+    --mt-danger: #de785e;
     --mt-danger-soft: #2b1b17;
-    --mt-faint: #7d7173;
-    --mt-line-strong: #4a3f40;
-    --mt-accent-soft: #2d2022;
-    --mt-sage: #9aa894;
-    --mt-sage-soft: #222722;
-    --mt-blue: #98a9b6;
-    --mt-blue-soft: #212729;
-    --mt-shadow: 0 16px 42px rgb(0 0 0 / 0.34), 0 2px 8px rgb(0 0 0 / 0.24);
-    --mt-shadow-overlay: 0 18px 48px rgb(0 0 0 / 0.5);
+
+    --mt-faint: #827b70;
+    --mt-line-strong: #48463f;
+    --mt-accent-soft: #422f31;
+    --mt-sage: #a4b09b;
+    --mt-sage-soft: #30382f;
+    --mt-blue: #a2b5c1;
+    --mt-blue-soft: #2c353b;
+    --mt-shadow: 0 18px 48px rgb(0 0 0 / 0.2);
+    --mt-shadow-overlay: 0 18px 48px rgb(0 0 0 / 0.34);
   }
 }
 
@@ -792,10 +794,10 @@ mao-brand[name]::after {
   text-decoration: none;
 }
 
-.mt-link-external::after {
-  content: "↗";
-  font-size: 0.85em;
-  line-height: 1;
+.mt-link-icon {
+  flex: none;
+  width: 0.9em;
+  height: 0.9em;
 }
 
 /* ── Reaction ───────────────────────────────────────────── */

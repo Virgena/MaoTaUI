@@ -1,2 +1,4 @@
 node_modules/
 .tmp/
+.trae/
+src/core/icons.generated.ts

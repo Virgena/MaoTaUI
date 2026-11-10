@@ -142,8 +142,8 @@ export function monetPalette(seed: string = DEFAULT_SEED, theme: MonetTheme = "d
   const muted = n.muted;
   const dangerSoft = theme === "dark" ? rgbHex(DANGER_HUE, 30, 13) : rgbHex(DANGER_HUE, 70, 96);
   const onDark = rgbHex(root.h, 16 * tint, 7);
-  const accent = theme === "light" ? hexOf(seed) : rgbHex(root.h + 3, clamp(root.s * 1.4, 0, 100), 68);
-  const onAccent = onFill(accent) ?? (theme === "dark" ? ON_DARK : ON_LIGHT);
+  const accent = hexOf(seed);
+  const onAccent = onFill(accent) ?? ON_LIGHT;
 
   const around = [bg, surface, surface2, dangerSoft, theme === "dark" ? onDark : ON_LIGHT];
   const inkFor = (hue: number, sat: number) =>
@@ -191,8 +191,8 @@ export function monetPalette(seed: string = DEFAULT_SEED, theme: MonetTheme = "d
   base["--mt-fill-neutral"] = primaryFill;
   base["--mt-on-primary"] = primaryOn;
   base["--mt-on-neutral"] = primaryOn;
-  base["--mt-accent"] = accent;
-  base["--mt-on-accent"] = onAccent;
+  base["--mt-accent"] = primaryFill;
+  base["--mt-on-accent"] = primaryOn;
   base["--mt-color-secondary"] = text;
   base["--mt-fill-secondary"] = text;
   base["--mt-on-secondary"] = bg;

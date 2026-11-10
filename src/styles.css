@@ -36,7 +36,7 @@
   /* Stillform 氛围令牌 */
   --mt-faint: #a59e92;
   --mt-line-strong: #cdcac4;
-  --mt-accent-soft: #f1e2e2;
+  --mt-accent-soft: #f5e8e8;
   --mt-sage: #73816e;
   --mt-sage-soft: #e7ebe3;
   --mt-blue: #718391;
@@ -107,14 +107,14 @@
   --mt-color-neutral: #c4838c;
   --mt-fill-neutral: #b15d69;
   --mt-on-neutral: #ffffff;
-  --mt-accent: #d08a91;
-  --mt-on-accent: #0f1015;
+  --mt-accent: #b15d69;
+  --mt-on-accent: #ffffff;
   --mt-danger: #de785e;
   --mt-danger-soft: #2b1b17;
 
   --mt-faint: #827b70;
   --mt-line-strong: #48463f;
-  --mt-accent-soft: #422f31;
+  --mt-accent-soft: #3a2729;
   --mt-sage: #a4b09b;
   --mt-sage-soft: #30382f;
   --mt-blue: #a2b5c1;
@@ -155,14 +155,14 @@
     --mt-color-neutral: #c4838c;
     --mt-fill-neutral: #b15d69;
     --mt-on-neutral: #ffffff;
-    --mt-accent: #d08a91;
-    --mt-on-accent: #0f1015;
+    --mt-accent: #b15d69;
+    --mt-on-accent: #ffffff;
     --mt-danger: #de785e;
     --mt-danger-soft: #2b1b17;
 
     --mt-faint: #827b70;
     --mt-line-strong: #48463f;
-    --mt-accent-soft: #422f31;
+    --mt-accent-soft: #3a2729;
     --mt-sage: #a4b09b;
     --mt-sage-soft: #30382f;
     --mt-blue: #a2b5c1;
@@ -574,8 +574,8 @@ mao-checkbox[checked] .mt-checkbox-box::after {
 }
 
 .mt-badge-accent {
-  border-color: var(--mt-accent);
-  color: var(--mt-accent);
+  border-color: var(--mt-color-primary);
+  color: var(--mt-color-primary);
   background: var(--mt-accent-soft);
   font-weight: 500;
 }
@@ -1046,7 +1046,7 @@ mao-avatar[size="lg"] {
 
 .mt-avatar-accent {
   background-color: var(--mt-accent-soft);
-  color: var(--mt-accent);
+  color: var(--mt-color-primary);
   border-color: transparent;
 }
 
@@ -1100,7 +1100,7 @@ mao-avatar[size="lg"] {
 .mt-notice-accent {
   background: var(--mt-accent-soft);
   border-color: transparent;
-  color: var(--mt-accent);
+  color: var(--mt-color-primary);
 }
 
 .mt-notice-danger {

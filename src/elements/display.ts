@@ -96,7 +96,7 @@ export class MaoNotice extends MaoElement {
     .title:empty { display: none; }
     :host([tone="sage"]) { background: var(--mt-sage-soft); border-color: transparent; color: var(--mt-sage); }
     :host([tone="blue"]) { background: var(--mt-blue-soft); border-color: transparent; color: var(--mt-blue); }
-    :host([tone="accent"]) { background: var(--mt-accent-soft); border-color: transparent; color: var(--mt-accent); }
+    :host([tone="accent"]) { background: var(--mt-accent-soft); border-color: transparent; color: var(--mt-color-primary); }
     :host([tone="danger"]) { background: var(--mt-danger-soft); border-color: transparent; color: var(--mt-danger); }
   `;
 

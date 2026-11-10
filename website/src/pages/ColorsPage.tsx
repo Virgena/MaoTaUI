@@ -17,7 +17,7 @@ const FOUNDATIONS: Array<[string, string, string]> = [
 
 const SUPPORTS: Array<[string, string, string]> = [
   ["--mt-accent", "强调", "var(--mt-on-accent)"],
-  ["--mt-accent-soft", "强调软背景", "var(--mt-accent)"],
+  ["--mt-accent-soft", "强调软背景", "var(--mt-color-primary)"],
   ["--mt-sage", "鼠尾草绿", "var(--mt-bg)"],
   ["--mt-sage-soft", "鼠尾草软背景", "var(--mt-sage)"],
   ["--mt-blue", "雾蓝", "var(--mt-bg)"],

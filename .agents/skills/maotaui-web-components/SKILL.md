@@ -36,12 +36,13 @@ pnpm dev          # docs site on http://localhost:5173
 
 - `src/core/color.ts` generates the palette from `DEFAULT_SEED` (`#a95d68`); `monetScale()` exposes the 50–950 scale.
 - `NEUTRAL_HEX` pins paper/surface/border/ink to the Stillform reference palette in both themes. Neutrals are fixed and must not be tinted by the seed hue.
-- `--mt-accent` is the seed in light and a lightened rose (`h+3`, `s*1.4`, `l=68`) in dark; `--mt-on-accent` is picked by contrast.
+- `--mt-accent` mirrors the primary fill: the seed in light, and in dark the deepened rose picked by `fillFor()`; `--mt-on-accent` is always white in the default seed so primary actions read white-on-rose.
+- When you need the light rose as *text* on soft backgrounds (badge / avatar / notice accent), use `--mt-color-primary`, never `--mt-accent`.
 - Secondary is the ink/paper pair (`--mt-fill-secondary` = `--mt-text`), not a separate hue.
 - Ambient tokens are hand-maintained in `src/styles.css`, not generated: `--mt-faint`, `--mt-line-strong`, `--mt-accent-soft`, `--mt-sage(-soft)`, `--mt-blue(-soft)`, `--mt-shadow(-overlay)`.
 - Workflow: change `color.ts`, re-paste the palette into the `:root` / `[data-theme="dark"]` / media-query blocks of `src/styles.css`, then run `pnpm check`. Generated tokens must match `monetPalette()` exactly; ambient tokens are not asserted.
 - `pnpm check` sweeps 7 seeds × 2 themes at ≥4.5. One intentional deviation from the reference: light `--mt-muted` is `#6f6860` (`#777168` fails on `--mt-surface-2`).
-- In dark theme `--mt-fill-primary` (and `--mt-fill-neutral`) is a deepened rose picked by `fillFor()` so white `--mt-on-primary` clears 4.5:1; `--mt-accent` stays the light rose for text and focus rings.
+- In dark theme `--mt-fill-primary` / `--mt-fill-neutral` / `--mt-accent` share the deepened rose picked by `fillFor()` so white `--mt-on-*` clears 4.5:1; ambient `--mt-accent-soft` is `#3a2729` (dark) / `#f5e8e8` (light) so `--mt-color-primary` text on it reaches 4.5:1.
 - `website/src/pages/ColorsPage.tsx` renders 基础色板 / 强调与支持 / 语义色 / 色阶 / 令牌. New tokens must be added to `TOKEN_NAMES` and `TOKEN_DESCRIPTIONS` to appear there.
 
 ## Add or change an element

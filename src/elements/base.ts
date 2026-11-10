@@ -36,7 +36,7 @@ export abstract class MaoElement extends FormAssociated {
     this.classList.add("is-ready");
   }
 
-  attributeChangedCallback(name: string, oldValue: string | null, newValue: string | null): void {
+  attributeChangedCallback(_name: string, oldValue: string | null, newValue: string | null): void {
     if (oldValue === newValue) return;
     if (!this.isConnected) return;
     this.update();

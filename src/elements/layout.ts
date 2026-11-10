@@ -13,7 +13,7 @@ export class MaoCard extends MaoElement {
     this.addEventListener("click", this.#onClick);
   }
 
-  protected update(): void {
+  protected override update(): void {
     const padding = this.attr("padding", "lg");
     this.classList.add("mt-card");
     ["sm", "md", "lg"].forEach((token) => this.classList.toggle(`mt-card-${token}`, token === padding));
@@ -38,12 +38,12 @@ export class MaoCard extends MaoElement {
 
 /** `<mao-header>`：shadow DOM 标题 + 描述 + end 插槽。 */
 export class MaoHeader extends MaoElement {
-  static readonly mode = "shadow" as const;
-  static readonly shadowHTML = `
+  static override readonly mode = "shadow" as const;
+  static override readonly shadowHTML = `
     <div class="row"><div class="title" part="title"></div><span class="end" part="end"><slot name="end"></slot></span></div>
     <p class="desc" part="description"></p>
   `;
-  static readonly styles = `
+  static override readonly styles = `
     :host { display: block; font-family: var(--mt-font); }
     .row { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; }
     .title { font-weight: 600; line-height: var(--mt-lh-tight); letter-spacing: -0.01em; }
@@ -59,7 +59,7 @@ export class MaoHeader extends MaoElement {
     return ["name", "description", "level"];
   }
 
-  protected update(): void {
+  protected override update(): void {
     const title = this.q(".title");
     const desc = this.q(".desc");
     if (title) {
@@ -77,7 +77,7 @@ export class MaoSegment extends MaoElement {
     return ["value", "disabled"];
   }
 
-  protected update(): void {
+  protected override update(): void {
     this.classList.add("mt-segmented-item");
     this.setAttribute("role", "tab");
     if (this.bool("disabled")) {
@@ -98,7 +98,7 @@ export class MaoSegmented extends MaoElement {
   #bound = false;
   #cleanupRoving: (() => void) | null = null;
 
-  connectedCallback(): void {
+  override connectedCallback(): void {
     super.connectedCallback();
     if (!this.#bound) {
       this.addEventListener("click", this.#onClick);
@@ -115,7 +115,7 @@ export class MaoSegmented extends MaoElement {
     this.#bound = false;
   }
 
-  protected update(): void {
+  protected override update(): void {
     this.classList.add("mt-segmented");
     this.setAttribute("role", "tablist");
     if (this.bool("disabled")) this.setAttribute("aria-disabled", "true");
@@ -159,7 +159,7 @@ export class MaoChip extends MaoElement {
 
   #bound = false;
 
-  connectedCallback(): void {
+  override connectedCallback(): void {
     super.connectedCallback();
     if (!this.#bound) {
       this.addEventListener("click", this.#toggle);
@@ -174,7 +174,7 @@ export class MaoChip extends MaoElement {
     this.#bound = false;
   }
 
-  protected update(): void {
+  protected override update(): void {
     this.classList.add("mt-chip");
     this.setAttribute("role", "button");
     this.setAttribute("aria-pressed", String(this.bool("active")));
@@ -199,13 +199,13 @@ export class MaoChip extends MaoElement {
 
 /** `<mao-scroll-shadow>`：shadow DOM 滚动容器，边缘用渐变提示。 */
 export class MaoScrollShadow extends MaoElement {
-  static readonly mode = "shadow" as const;
-  static readonly shadowHTML = `
+  static override readonly mode = "shadow" as const;
+  static override readonly shadowHTML = `
     <div class="viewport" part="viewport"><slot></slot></div>
     <span class="edge start" part="edge-start" aria-hidden="true"></span>
     <span class="edge end" part="edge-end" aria-hidden="true"></span>
   `;
-  static readonly styles = `
+  static override readonly styles = `
     :host { display: block; position: relative; min-width: 0; --mt-shadow-size: 2rem; --mt-shadow-color: var(--mt-bg); }
     .viewport {
       display: flex; gap: 8px; margin: 0; padding: 0;
@@ -245,7 +245,7 @@ export class MaoScrollShadow extends MaoElement {
   #cleanupWheel: (() => void) | null = null;
   #cleanupDrag: (() => void) | null = null;
 
-  connectedCallback(): void {
+  override connectedCallback(): void {
     super.connectedCallback();
     const viewport = this.q<HTMLElement>(".viewport");
     this.#viewport = viewport;
@@ -273,7 +273,7 @@ export class MaoScrollShadow extends MaoElement {
     this.#cleanupDrag = null;
   }
 
-  protected update(): void {
+  protected override update(): void {
     const size = this.getAttribute("shadow-size");
     if (size) this.style.setProperty("--mt-shadow-size", size);
     else this.style.removeProperty("--mt-shadow-size");
@@ -313,8 +313,8 @@ export class MaoScrollShadow extends MaoElement {
 
 /** `<mao-dialog>`：shadow DOM 原生 dialog。 */
 export class MaoDialog extends MaoElement {
-  static readonly mode = "shadow" as const;
-  static readonly shadowHTML = `
+  static override readonly mode = "shadow" as const;
+  static override readonly shadowHTML = `
     <dialog part="dialog">
       <div class="panel">
         <header class="head">
@@ -326,7 +326,7 @@ export class MaoDialog extends MaoElement {
       </div>
     </dialog>
   `;
-  static readonly styles = `
+  static override readonly styles = `
     :host { display: contents; font-family: var(--mt-font); }
     dialog {
       width: min(440px, calc(100vw - 32px));
@@ -360,7 +360,7 @@ export class MaoDialog extends MaoElement {
 
   #bound = false;
 
-  connectedCallback(): void {
+  override connectedCallback(): void {
     super.connectedCallback();
     const dialog = this.q<HTMLDialogElement>("dialog");
     if (dialog && !this.#bound) {
@@ -378,7 +378,7 @@ export class MaoDialog extends MaoElement {
     this.#bound = false;
   }
 
-  protected update(): void {
+  protected override update(): void {
     const title = this.q(".title");
     if (title) title.textContent = this.attr("heading");
     const close = this.q<HTMLElement>(".close");

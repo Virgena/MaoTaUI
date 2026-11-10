@@ -19,7 +19,7 @@ export class MaoButton extends MaoElement {
     this.#bound = true;
   }
 
-  connectedCallback(): void {
+  override connectedCallback(): void {
     super.connectedCallback();
     if (!this.#bound) {
       this.addEventListener("click", this.#onClick);
@@ -34,7 +34,7 @@ export class MaoButton extends MaoElement {
     this.#bound = false;
   }
 
-  protected update(): void {
+  protected override update(): void {
     const color = this.attr("color", "neutral");
     const variant = this.attr("variant", "solid");
     const size = this.attr("size", "md");
@@ -81,7 +81,7 @@ export class MaoButtonGroup extends MaoElement {
     return ["orientation"];
   }
 
-  protected update(): void {
+  protected override update(): void {
     const vertical = this.attr("orientation", "horizontal") === "vertical";
     this.classList.add("mt-btn-group");
     this.classList.toggle("mt-btn-group-vertical", vertical);

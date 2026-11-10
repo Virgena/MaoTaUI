@@ -3,9 +3,9 @@ import { iconSvg } from "../core/icons.ts";
 
 /** `<mao-icon>`：shadow DOM，渲染内置 SVG。 */
 export class MaoIcon extends MaoElement {
-  static readonly mode = "shadow" as const;
-  static readonly shadowHTML = '<span class="box" part="icon"></span>';
-  static readonly styles = `
+  static override readonly mode = "shadow" as const;
+  static override readonly shadowHTML = '<span class="box" part="icon"></span>';
+  static override readonly styles = `
     :host { display: inline-flex; align-items: center; justify-content: center; line-height: 0; flex: none; color: inherit; }
     .box { display: flex; }
   `;
@@ -14,7 +14,7 @@ export class MaoIcon extends MaoElement {
     return ["name", "size", "label", "stroke-width"];
   }
 
-  protected update(): void {
+  protected override update(): void {
     const box = this.q(".box");
     if (!box) return;
     box.innerHTML = iconSvg(this.attr("name"), {
@@ -31,7 +31,7 @@ export class MaoBadge extends MaoElement {
     return ["tone"];
   }
 
-  protected update(): void {
+  protected override update(): void {
     const tone = this.attr("tone", "neutral");
     this.classList.add("mt-badge");
     ["accent", "danger", "sage", "blue", "solid"].forEach((token) =>
@@ -46,7 +46,7 @@ export class MaoAvatar extends MaoElement {
     return ["label", "src", "alt", "size", "tone"];
   }
 
-  protected update(): void {
+  protected override update(): void {
     const size = this.attr("size", "md");
     this.classList.add("mt-avatar");
     ["sm", "lg"].forEach((token) => this.classList.toggle(`mt-avatar-${token}`, token === size));
@@ -63,15 +63,15 @@ export class MaoAvatar extends MaoElement {
 
 /** `<mao-notice>`：shadow DOM，自带图标、标题与默认插槽。 */
 export class MaoNotice extends MaoElement {
-  static readonly mode = "shadow" as const;
-  static readonly shadowHTML = `
+  static override readonly mode = "shadow" as const;
+  static override readonly shadowHTML = `
     <span class="mark" part="mark"></span>
     <div class="body">
       <div class="title" part="title"></div>
       <div class="content" part="content"><slot></slot></div>
     </div>
   `;
-  static readonly styles = `
+  static override readonly styles = `
     :host {
       display: grid;
       grid-template-columns: 18px 1fr;
@@ -104,7 +104,7 @@ export class MaoNotice extends MaoElement {
     return ["tone", "title"];
   }
 
-  protected update(): void {
+  protected override update(): void {
     const mark = this.q(".mark");
     const title = this.q(".title");
     const tone = this.attr("tone", "info");
@@ -116,12 +116,12 @@ export class MaoNotice extends MaoElement {
 
 /** `<mao-progress>`：shadow DOM，属性驱动。 */
 export class MaoProgress extends MaoElement {
-  static readonly mode = "shadow" as const;
-  static readonly shadowHTML = `
+  static override readonly mode = "shadow" as const;
+  static override readonly shadowHTML = `
     <div class="head"><span class="label" part="label"></span><span class="value" part="value"></span></div>
     <div class="track" part="track"><div class="bar" part="bar"></div></div>
   `;
-  static readonly styles = `
+  static override readonly styles = `
     :host { display: block; font-family: var(--mt-font); font-size: var(--mt-fs-sm); color: var(--mt-muted); }
     .head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 6px; }
     .head:not(:has(.label:not(:empty))) { display: none; }
@@ -136,7 +136,7 @@ export class MaoProgress extends MaoElement {
     return ["value", "max", "label", "show-value"];
   }
 
-  protected update(): void {
+  protected override update(): void {
     const max = Math.max(1, this.num("max", 100));
     const value = Math.min(max, Math.max(0, this.num("value", 0)));
     const percent = (value / max) * 100;
@@ -156,13 +156,13 @@ export class MaoProgress extends MaoElement {
 
 /** `<mao-metric>`：shadow DOM，标签 / 数值 / 趋势。 */
 export class MaoMetric extends MaoElement {
-  static readonly mode = "shadow" as const;
-  static readonly shadowHTML = `
+  static override readonly mode = "shadow" as const;
+  static override readonly shadowHTML = `
     <span class="label" part="label"></span>
     <span class="value" part="value"></span>
     <span class="trend" part="trend"></span>
   `;
-  static readonly styles = `
+  static override readonly styles = `
     :host { display: flex; flex-direction: column; gap: 2px; font-family: var(--mt-font); }
     .label { color: var(--mt-muted); font-size: var(--mt-fs-xs); }
     .value { font-size: var(--mt-fs-2xl); font-weight: 600; line-height: 1.1; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
@@ -175,7 +175,7 @@ export class MaoMetric extends MaoElement {
     return ["label", "value", "trend"];
   }
 
-  protected update(): void {
+  protected override update(): void {
     const label = this.q(".label");
     const value = this.q(".value");
     const trend = this.q(".trend");
@@ -187,12 +187,12 @@ export class MaoMetric extends MaoElement {
 
 /** `<mao-mini-chart>`：shadow DOM，用 CSS 变量画柱状图。 */
 export class MaoMiniChart extends MaoElement {
-  static readonly mode = "shadow" as const;
-  static readonly shadowHTML = `
+  static override readonly mode = "shadow" as const;
+  static override readonly shadowHTML = `
     <div class="bars" part="bars"></div>
     <div class="axis" part="axis"><span class="axis-label"></span><span class="axis-unit"></span></div>
   `;
-  static readonly styles = `
+  static override readonly styles = `
     :host { display: block; font-family: var(--mt-font); }
     .bars { display: flex; align-items: flex-end; gap: 6px; height: 58px; }
     .bar { flex: 1; min-width: 4px; height: var(--mt-bar, 0%); border-radius: var(--mt-radius-sm) var(--mt-radius-sm) 3px 3px; background: var(--mt-sage-soft); transition: height var(--mt-dur) var(--mt-ease); }
@@ -209,7 +209,7 @@ export class MaoMiniChart extends MaoElement {
     return ["values", "active", "label", "unit"];
   }
 
-  protected update(): void {
+  protected override update(): void {
     const bars = this.q(".bars");
     if (!bars) return;
     const values = this.attr("values")
@@ -239,7 +239,7 @@ export class MaoDivider extends MaoElement {
     return ["orientation", "dashed", "color"];
   }
 
-  protected update(): void {
+  protected override update(): void {
     const vertical = this.attr("orientation", "horizontal") === "vertical";
     this.classList.add("mt-divider");
     this.classList.toggle("mt-divider-horizontal", !vertical);
@@ -265,7 +265,7 @@ export class MaoBrand extends MaoElement {
     this.addEventListener("click", this.#onClick);
   }
 
-  protected update(): void {
+  protected override update(): void {
     this.classList.add("mt-brand");
     const src = this.getAttribute("icon-src");
     if (src) this.style.setProperty("--mt-brand-icon", `url("${src.replace(/"/g, "%22")}")`);

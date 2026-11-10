@@ -17,7 +17,7 @@ export class MaoLink extends MaoElement {
     this.addEventListener("keydown", this.#onKeyDown);
   }
 
-  protected update(): void {
+  protected override update(): void {
     const size = this.attr("size", "md");
     const underline = this.attr("underline", "always");
     this.classList.add("mt-link");
@@ -67,14 +67,14 @@ export class MaoLink extends MaoElement {
 
 /** `<mao-copy>`：shadow DOM 复制按钮。 */
 export class MaoCopy extends MaoElement {
-  static readonly mode = "shadow" as const;
-  static readonly shadowHTML = `
+  static override readonly mode = "shadow" as const;
+  static override readonly shadowHTML = `
     <button class="btn" part="button" type="button">
       <span class="ic" part="icon"></span>
       <span class="label" part="label"></span>
     </button>
   `;
-  static readonly styles = `
+  static override readonly styles = `
     :host { display: inline-block; font-family: var(--mt-font); --c: var(--mt-text); }
     .btn {
       display: inline-flex; align-items: center; justify-content: center; gap: 6px;
@@ -103,7 +103,7 @@ export class MaoCopy extends MaoElement {
   #copied = false;
   #bound = false;
 
-  connectedCallback(): void {
+  override connectedCallback(): void {
     super.connectedCallback();
     if (!this.#bound) {
       this.shadowRoot?.addEventListener("click", this.#onClick);
@@ -116,7 +116,7 @@ export class MaoCopy extends MaoElement {
     this.#timer = 0;
   }
 
-  protected update(): void {
+  protected override update(): void {
     if (this.#copied) return;
     const label = this.q(".label");
     const icon = this.q(".ic");
@@ -153,15 +153,15 @@ export class MaoCopy extends MaoElement {
 
 /** `<mao-reaction>`：shadow DOM 表情/点赞按钮。 */
 export class MaoReaction extends MaoElement {
-  static readonly mode = "shadow" as const;
-  static readonly shadowHTML = `
+  static override readonly mode = "shadow" as const;
+  static override readonly shadowHTML = `
     <button class="btn" part="button" type="button">
       <span class="ic" part="icon"></span>
       <span class="count" part="count"></span>
       <span class="text"><slot></slot></span>
     </button>
   `;
-  static readonly styles = `
+  static override readonly styles = `
     :host { display: inline-block; font-family: var(--mt-font); --c: var(--mt-color-danger); --c-fill: var(--mt-fill-danger); --on-c: var(--mt-on-danger); }
     .btn {
       display: inline-flex; align-items: center; gap: 5px;
@@ -190,7 +190,7 @@ export class MaoReaction extends MaoElement {
 
   #bound = false;
 
-  connectedCallback(): void {
+  override connectedCallback(): void {
     super.connectedCallback();
     if (!this.#bound) {
       this.shadowRoot?.addEventListener("click", this.#onClick);
@@ -198,7 +198,7 @@ export class MaoReaction extends MaoElement {
     }
   }
 
-  protected update(): void {
+  protected override update(): void {
     const icon = this.q(".ic");
     const count = this.q(".count");
     const color = this.attr("color", "danger");

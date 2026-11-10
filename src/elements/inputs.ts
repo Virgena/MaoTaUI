@@ -25,18 +25,18 @@ const FIELD_STYLES = `
 /** `<mao-text-field>`：shadow DOM + 表单关联。 */
 export class MaoTextField extends MaoElement {
   static formAssociated = true;
-  static readonly mode = "shadow" as const;
-  static readonly shadowHTML = `
+  static override readonly mode = "shadow" as const;
+  static override readonly shadowHTML = `
     <label class="field" part="field">
       <span class="label" part="label"></span>
       <input class="control" part="input" />
       <span class="hint" part="hint"></span>
     </label>
   `;
-  static readonly styles = FIELD_STYLES;
+  static override readonly styles = FIELD_STYLES;
 
   static get observedAttributes(): string[] {
-    return ["label", "hint", "value", "placeholder", "type", "name", "required", "disabled", "readonly", "invalid"];
+    return ["label", "hint", "value", "placeholder", "type", "name", "required", "disabled", "readonly", "invalid", "autocomplete"];
   }
 
   constructor() {
@@ -45,7 +45,7 @@ export class MaoTextField extends MaoElement {
     this.shadowRoot?.addEventListener("change", this.#onInput);
   }
 
-  connectedCallback(): void {
+  override connectedCallback(): void {
     super.connectedCallback();
     const root = this.shadowRoot;
     if (root && !this.#bound) {
@@ -65,7 +65,7 @@ export class MaoTextField extends MaoElement {
     this.setAttribute("value", next);
   }
 
-  protected update(): void {
+  protected override update(): void {
     const label = this.q(".label");
     const hint = this.q(".hint");
     const input = this.q<HTMLInputElement>(".control");
@@ -79,6 +79,8 @@ export class MaoTextField extends MaoElement {
     input.disabled = this.bool("disabled");
     input.readOnly = this.bool("readonly");
     input.setAttribute("aria-invalid", String(this.bool("invalid")));
+    const autocomplete = this.getAttribute("autocomplete");
+    if (autocomplete !== null) input.setAttribute("autocomplete", autocomplete);
     const next = this.attr("value");
     if (input.value !== next) input.value = next;
     this.syncFormValue(next);
@@ -95,20 +97,26 @@ export class MaoTextField extends MaoElement {
     if (this.getAttribute("value") !== input.value) this.setAttribute("value", input.value);
     emit(this, "mt-input", { value: input.value, name: this.attr("name") });
   };
+
+  override focus(): void {
+    const control = this.q<HTMLElement>(".control");
+    if (control) control.focus();
+    else super.focus();
+  }
 }
 
 /** `<mao-text-area>`：shadow DOM + 表单关联。 */
 export class MaoTextArea extends MaoElement {
   static formAssociated = true;
-  static readonly mode = "shadow" as const;
-  static readonly shadowHTML = `
+  static override readonly mode = "shadow" as const;
+  static override readonly shadowHTML = `
     <label class="field" part="field">
       <span class="label" part="label"></span>
       <textarea class="control" part="textarea"></textarea>
       <span class="hint" part="hint"></span>
     </label>
   `;
-  static readonly styles = FIELD_STYLES;
+  static override readonly styles = FIELD_STYLES;
 
   static get observedAttributes(): string[] {
     return ["label", "hint", "value", "placeholder", "rows", "name", "required", "disabled", "readonly", "invalid"];
@@ -116,7 +124,7 @@ export class MaoTextArea extends MaoElement {
 
   #bound = false;
 
-  connectedCallback(): void {
+  override connectedCallback(): void {
     super.connectedCallback();
     const root = this.shadowRoot;
     if (root && !this.#bound) {
@@ -133,7 +141,7 @@ export class MaoTextArea extends MaoElement {
     this.setAttribute("value", next);
   }
 
-  protected update(): void {
+  protected override update(): void {
     const label = this.q(".label");
     const hint = this.q(".hint");
     const area = this.q<HTMLTextAreaElement>(".control");
@@ -158,6 +166,12 @@ export class MaoTextArea extends MaoElement {
     if (this.getAttribute("value") !== area.value) this.setAttribute("value", area.value);
     emit(this, "mt-input", { value: area.value, name: this.attr("name") });
   };
+
+  override focus(): void {
+    const control = this.q<HTMLElement>(".control");
+    if (control) control.focus();
+    else super.focus();
+  }
 }
 
 interface SelectOption {
@@ -187,15 +201,15 @@ function parseOptions(raw: string): SelectOption[] {
 /** `<mao-select>`：shadow DOM，options 以 JSON 属性传入。 */
 export class MaoSelect extends MaoElement {
   static formAssociated = true;
-  static readonly mode = "shadow" as const;
-  static readonly shadowHTML = `
+  static override readonly mode = "shadow" as const;
+  static override readonly shadowHTML = `
     <label class="field" part="field">
       <span class="label" part="label"></span>
       <select class="control" part="select"></select>
       <span class="hint" part="hint"></span>
     </label>
   `;
-  static readonly styles = FIELD_STYLES;
+  static override readonly styles = FIELD_STYLES;
 
   static get observedAttributes(): string[] {
     return ["label", "hint", "options", "value", "placeholder", "name", "required", "disabled"];
@@ -203,7 +217,7 @@ export class MaoSelect extends MaoElement {
 
   #bound = false;
 
-  connectedCallback(): void {
+  override connectedCallback(): void {
     super.connectedCallback();
     const root = this.shadowRoot;
     if (root && !this.#bound) {
@@ -220,7 +234,7 @@ export class MaoSelect extends MaoElement {
     this.setAttribute("value", next);
   }
 
-  protected update(): void {
+  protected override update(): void {
     const label = this.q(".label");
     const hint = this.q(".hint");
     const select = this.q<HTMLSelectElement>(".control");
@@ -259,13 +273,19 @@ export class MaoSelect extends MaoElement {
     this.syncFormValue(select.value);
     emit(this, "mt-change", { value: select.value });
   };
+
+  override focus(): void {
+    const control = this.q<HTMLElement>(".control");
+    if (control) control.focus();
+    else super.focus();
+  }
 }
 
 /** `<mao-switch>`：shadow DOM + 表单关联，默认插槽为标签文字。 */
 export class MaoSwitch extends MaoElement {
   static formAssociated = true;
-  static readonly mode = "shadow" as const;
-  static readonly shadowHTML = `
+  static override readonly mode = "shadow" as const;
+  static override readonly shadowHTML = `
     <label class="root" part="base">
       <button class="track" type="button" part="control" role="switch">
         <span class="thumb"></span>
@@ -273,7 +293,7 @@ export class MaoSwitch extends MaoElement {
       <span class="text" part="label"><slot></slot></span>
     </label>
   `;
-  static readonly styles = `
+  static override readonly styles = `
     :host { display: inline-block; font-family: var(--mt-font); }
     .root { display: inline-flex; align-items: center; gap: 9px; cursor: pointer; user-select: none; color: var(--mt-text); font-size: var(--mt-fs-md); }
     .track {
@@ -313,7 +333,7 @@ export class MaoSwitch extends MaoElement {
     this.addEventListener("click", this.#onClick);
   }
 
-  connectedCallback(): void {
+  override connectedCallback(): void {
     super.connectedCallback();
     if (!this.#bound) {
       this.addEventListener("click", this.#onClick);
@@ -330,7 +350,7 @@ export class MaoSwitch extends MaoElement {
     else this.removeAttribute("checked");
   }
 
-  protected update(): void {
+  protected override update(): void {
     const track = this.q<HTMLButtonElement>(".track");
     const disabled = this.bool("disabled");
     if (track) {
@@ -357,15 +377,15 @@ export class MaoSwitch extends MaoElement {
 /** `<mao-checkbox>`：shadow DOM + 表单关联。 */
 export class MaoCheckbox extends MaoElement {
   static formAssociated = true;
-  static readonly mode = "shadow" as const;
-  static readonly shadowHTML = `
+  static override readonly mode = "shadow" as const;
+  static override readonly shadowHTML = `
     <label class="root" part="base">
       <input class="native" type="checkbox" part="input" />
       <span class="box" part="box"></span>
       <span class="text" part="label"><slot></slot></span>
     </label>
   `;
-  static readonly styles = `
+  static override readonly styles = `
     :host { display: inline-block; font-family: var(--mt-font); }
     .root { position: relative; display: inline-flex; align-items: center; gap: 9px; cursor: pointer; user-select: none; color: var(--mt-text); font-size: var(--mt-fs-md); }
     .native { position: absolute; width: 1px; height: 1px; opacity: 0; margin: 0; }
@@ -399,7 +419,7 @@ export class MaoCheckbox extends MaoElement {
 
   #bound = false;
 
-  connectedCallback(): void {
+  override connectedCallback(): void {
     super.connectedCallback();
     const root = this.shadowRoot;
     if (root && !this.#bound) {
@@ -417,7 +437,7 @@ export class MaoCheckbox extends MaoElement {
     else this.removeAttribute("checked");
   }
 
-  protected update(): void {
+  protected override update(): void {
     const input = this.q<HTMLInputElement>(".native");
     const disabled = this.bool("disabled");
     if (input) {

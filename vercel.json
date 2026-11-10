@@ -1,0 +1,6 @@
+{
+  "framework": null,
+  "installCommand": "pnpm install && pnpm --dir website install",
+  "buildCommand": "pnpm icons && pnpm --dir website build",
+  "outputDirectory": "website/dist"
+}

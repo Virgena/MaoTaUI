@@ -10,7 +10,7 @@ Native custom elements, no runtime framework. Docs site is a React 19 shell that
 ## Repo map
 
 - `src/index.ts` — entry. Exports core + elements, then calls `defineMaoElements()` only when `customElements` exists.
-- `src/elements/*.ts` — element classes. Default render mode is light DOM; form controls and dialog use shadow DOM.
+- `src/elements/*.ts` — element classes. Each declares `static mode`; most controls, display and layout elements are `"shadow"` (with `static styles` + `shadowHTML`), the rest render light DOM.
 - `src/core/registry.ts` — single source of truth for tag, attributes, events, slots, example. Docs and AI read this instead of duplicating tables.
 - `src/core/` — `theme.ts`, `tokens.ts`, `color.ts`, `icons.ts`, `events.ts`, `form.ts`, `dom.ts`.
 - `src/core/icons.generated.ts` — generated Lucide icon bodies; gitignored, never hand-edit.
@@ -27,7 +27,7 @@ pnpm icons        # regenerate src/core/icons.generated.ts from @iconify-json/lu
 pnpm typecheck
 pnpm --filter maotaui-website exec tsc -p tsconfig.json --noEmit
 pnpm build
-pnpm check        # contrast of every token, both themes
+pnpm check        # generated tokens vs styles.css + contrast sweep, both themes
 pnpm ssr          # Node import smoke test
 pnpm dev          # docs site on http://localhost:5173
 ```
@@ -36,22 +36,25 @@ pnpm dev          # docs site on http://localhost:5173
 
 - `src/core/color.ts` generates the palette from `DEFAULT_SEED` (`#a95d68`); `monetScale()` exposes the 50–950 scale.
 - `NEUTRAL_HEX` pins paper/surface/border/ink to the Stillform reference palette in both themes. Neutrals are fixed and must not be tinted by the seed hue.
-- `--mt-accent` mirrors the primary fill: the seed in light, and in dark the deepened rose picked by `fillFor()`; `--mt-on-accent` is always white in the default seed so primary actions read white-on-rose.
+- `--mt-accent` mirrors the primary fill (the seed in light, the deepened rose in dark), so `--mt-on-accent` is white with the default seed and primary actions read white-on-rose in both themes.
 - When you need the light rose as *text* on soft backgrounds (badge / avatar / notice accent), use `--mt-color-primary`, never `--mt-accent`.
 - Secondary is the ink/paper pair (`--mt-fill-secondary` = `--mt-text`), not a separate hue.
 - Ambient tokens are hand-maintained in `src/styles.css`, not generated: `--mt-faint`, `--mt-line-strong`, `--mt-accent-soft`, `--mt-sage(-soft)`, `--mt-blue(-soft)`, `--mt-shadow(-overlay)`.
 - Workflow: change `color.ts`, re-paste the palette into the `:root` / `[data-theme="dark"]` / media-query blocks of `src/styles.css`, then run `pnpm check`. Generated tokens must match `monetPalette()` exactly; ambient tokens are not asserted.
 - `pnpm check` sweeps 7 seeds × 2 themes at ≥4.5. One intentional deviation from the reference: light `--mt-muted` is `#6f6860` (`#777168` fails on `--mt-surface-2`).
 - In dark theme `--mt-fill-primary` / `--mt-fill-neutral` / `--mt-accent` share the deepened rose picked by `fillFor()` so white `--mt-on-*` clears 4.5:1; ambient `--mt-accent-soft` is `#3a2729` (dark) / `#f5e8e8` (light) so `--mt-color-primary` text on it reaches 4.5:1.
+- Solid fills always pair with their `--mt-on-*`: buttons use `fill-*` / `on-*`, the checked checkbox and `badge-solid` use `accent` / `on-accent`. Never paint text or icons on a solid fill with `--mt-text`.
+- `pnpm check` only asserts generated tokens; ambient pairs (e.g. `--mt-color-primary` on `--mt-accent-soft`) are hand-verified, so recheck them whenever you touch soft backgrounds.
 - `website/src/pages/ColorsPage.tsx` renders 基础色板 / 强调与支持 / 语义色 / 色阶 / 令牌. New tokens must be added to `TOKEN_NAMES` and `TOKEN_DESCRIPTIONS` to appear there.
 
 ## Add or change an element
 
 1. Implement the class in `src/elements/`, extending `MaoElement`; declare `observedAttributes` and update existing nodes in `update()`.
-2. Register it in `ELEMENT_DEFINITIONS` in `src/elements/index.ts`.
-3. Add a `COMPONENT_REGISTRY` entry in `src/core/registry.ts` with attributes, events, slots, and an example.
-4. Add a docs page under `website/src/pages/` and a route in `website/src/routes.ts`; end the page with `<ApiProps tag="mao-x" />`.
-5. Style with `.mt-*` classes and `var(--mt-*)` tokens only, then run both typechecks and `pnpm check`.
+2. Pick a render mode: default light DOM; set `static mode = "shadow"` plus `static styles` and `static shadowHTML` for encapsulated components (checkbox, radio, switch, icon, progress, dialog…). `styles` is adopted once per class; `update()` must only touch existing shadow nodes.
+3. Register it in `ELEMENT_DEFINITIONS` in `src/elements/index.ts`.
+4. Add a `COMPONENT_REGISTRY` entry in `src/core/registry.ts` with attributes, events, slots, and an example.
+5. Add a docs page under `website/src/pages/` and a route in `website/src/routes.ts`; end the page with `<ApiProps tag="mao-x" />`.
+6. Style with `.mt-*` classes and `var(--mt-*)` tokens only, then run both typechecks and `pnpm check`.
 
 ## Docs site shell
 

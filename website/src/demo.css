@@ -249,8 +249,7 @@ pre.demo-code {
   width: 100%;
   border-collapse: separate;
   border-spacing: 0;
-  overflow: hidden;
-  border: 1px solid var(--docs-line);
+  border: 1px solid var(--mt-border);
   border-radius: var(--mt-radius-xl);
   background: var(--mt-surface);
   font-size: var(--mt-fs-sm);
@@ -259,15 +258,28 @@ pre.demo-code {
 .props th,
 .props td {
   text-align: left;
-  padding: var(--mt-space-2) var(--mt-space-3);
-  border-bottom: 1px solid var(--docs-line);
-  vertical-align: top;
+  padding: 9px var(--mt-space-3);
+  border-bottom: 1px solid color-mix(in srgb, var(--mt-border) 55%, transparent);
+  vertical-align: middle;
 }
 
 .props th {
-  background: var(--mt-surface-2);
-  color: var(--mt-text);
+  position: sticky;
+  top: var(--docs-topbar);
+  z-index: 1;
+  background: var(--mt-surface);
+  color: var(--mt-muted);
+  font-size: var(--mt-fs-xs);
   font-weight: 600;
+  letter-spacing: 0.08em;
+}
+
+.props th:first-child {
+  border-top-left-radius: calc(var(--mt-radius-xl) - 1px);
+}
+
+.props th:last-child {
+  border-top-right-radius: calc(var(--mt-radius-xl) - 1px);
 }
 
 .props tr:last-child th,
@@ -275,10 +287,31 @@ pre.demo-code {
   border-bottom: 0;
 }
 
+.props tbody tr:hover {
+  background: var(--docs-inset);
+}
+
 .props td:first-child {
   font-family: var(--mt-mono);
   color: var(--mt-color-primary);
   white-space: nowrap;
+}
+
+.tok-val {
+  font-family: var(--mt-mono);
+  font-size: var(--mt-fs-xs);
+  color: var(--mt-muted);
+  overflow-wrap: anywhere;
+}
+
+.tok-val i {
+  display: inline-block;
+  width: 13px;
+  height: 13px;
+  margin-right: 6px;
+  vertical-align: -2px;
+  border: 1px solid var(--docs-line);
+  border-radius: var(--mt-radius-sm);
 }
 
 .tone-grid {

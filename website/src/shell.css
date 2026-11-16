@@ -286,25 +286,71 @@ body,
   background: transparent;
 }
 
-.sidebar h1 {
-  font-size: var(--mt-fs-xs);
+.sidebar summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--mt-space-2);
+  padding: 7px var(--mt-space-2);
+  border-radius: var(--mt-radius-sm);
   color: color-mix(in srgb, var(--mt-muted) 68%, var(--mt-bg));
+  font-size: var(--mt-fs-xs);
   letter-spacing: 0.08em;
-  margin: var(--mt-space-3) var(--mt-space-2) var(--mt-space-1);
   font-weight: 600;
+  cursor: pointer;
+  list-style: none;
+  transition: background-color var(--mt-dur-fast) var(--mt-ease),
+    color var(--mt-dur-fast) var(--mt-ease);
 }
 
-.sidebar nav {
+.sidebar summary::-webkit-details-marker {
+  display: none;
+}
+
+.sidebar summary::after {
+  content: "";
+  width: 6px;
+  height: 6px;
+  flex: none;
+  margin: 0 var(--mt-space-1) 2px 0;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: rotate(-45deg);
+  transition: transform var(--mt-dur-fast) var(--mt-ease);
+}
+
+.sidebar details[open] > summary::after {
+  margin-bottom: -2px;
+  transform: rotate(45deg);
+}
+
+.sidebar summary:hover {
+  background: color-mix(in srgb, var(--mt-fill-primary) 10%, transparent);
+  color: var(--mt-text);
+}
+
+.sidebar summary:focus-visible {
+  outline: 2px solid var(--mt-accent);
+  outline-offset: 2px;
+}
+
+.sidebar summary.active {
+  background: color-mix(in srgb, var(--mt-fill-primary) 13%, transparent);
+  color: var(--mt-color-primary);
+}
+
+.sidebar-links {
   display: flex;
   flex-direction: column;
   gap: 2px;
+  padding: var(--mt-space-1) 0 0;
 }
 
-.sidebar nav + nav {
+.sidebar-group + .sidebar-group {
   margin-top: var(--mt-space-2);
 }
 
-.sidebar nav a {
+.sidebar-links a {
   display: block;
   padding: 6px var(--mt-space-2) 6px var(--mt-space-5);
   border-radius: var(--mt-radius-sm);
@@ -315,11 +361,11 @@ body,
     color var(--mt-dur-fast) var(--mt-ease);
 }
 
-.sidebar nav a:hover {
+.sidebar-links a:hover {
   background: color-mix(in srgb, var(--mt-fill-primary) 10%, transparent);
 }
 
-.sidebar nav a.active {
+.sidebar-links a.active {
   background: color-mix(in srgb, var(--mt-fill-primary) 13%, transparent);
   color: var(--mt-color-primary);
   font-weight: 600;

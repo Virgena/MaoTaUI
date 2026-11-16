@@ -13,7 +13,6 @@ import { DividerPage } from "./pages/DividerPage.tsx";
 import { FieldsPage } from "./pages/FieldsPage.tsx";
 import { HeaderPage } from "./pages/HeaderPage.tsx";
 import { IconPage } from "./pages/IconPage.tsx";
-import { IntegrationPage } from "./pages/IntegrationPage.tsx";
 import { LinkPage } from "./pages/LinkPage.tsx";
 import { MetricPage } from "./pages/MetricPage.tsx";
 import { NoticePage } from "./pages/NoticePage.tsx";
@@ -25,7 +24,6 @@ import { SwitchPage } from "./pages/SwitchPage.tsx";
 
 export const routes = [
   { id: "colors", group: "开始使用", label: "Colors (色彩)", render: ColorsPage },
-  { id: "integration", group: "开始使用", label: "Integration (接入)", render: IntegrationPage },
   { id: "button", group: "操作", label: "Button (按钮)", render: ButtonPage },
   { id: "buttongroup", group: "操作", label: "ButtonGroup (按钮组)", render: ButtonGroupPage },
   { id: "link", group: "操作", label: "Link (链接)", render: LinkPage },

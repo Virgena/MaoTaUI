@@ -112,7 +112,11 @@ export function ColorsPage() {
       <h2>令牌</h2>
       <Props
         head={["令牌", "说明", "当前值"]}
-        rows={TOKEN_NAMES.map((name) => [name, TOKEN_DESCRIPTIONS[name], value(name)])}
+        rows={TOKEN_NAMES.map((name) => {
+          const v = value(name);
+          const swatch = /^#[0-9a-f]{3,8}$/i.test(v) ? <i style={{ background: v }} /> : null;
+          return [name, TOKEN_DESCRIPTIONS[name], <span className="tok-val">{swatch}{v}</span>];
+        })}
       />
     </>
   );

@@ -1,6 +1,6 @@
 {
   "name": "maotaui",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "现代无头 Web Components 组件库, SSR 安全、零水合报错",
   "type": "module",
   "main": "./dist/index.js",
@@ -44,7 +44,7 @@
     "check": "node --experimental-strip-types website/check-contrast.ts",
     "pressr": "pnpm icons",
     "ssr": "node --experimental-strip-types scripts/ssr-smoke.ts",
-    "build:lib": "pnpm icons && tsc -p tsconfig.json --noEmit false --outDir dist --declaration --rewriteRelativeImportExtensions && node -e \"require('node:fs').copyFileSync('src/styles.css','dist/styles.css')\"",
+    "build:lib": "pnpm icons && tsc -p tsconfig.json --noEmit false --outDir dist --declaration --rewriteRelativeImportExtensions && node -e \"const fs=require('node:fs');fs.rmSync('dist/fonts',{recursive:true,force:true});fs.mkdirSync('dist/fonts',{recursive:true});fs.copyFileSync('src/styles.css','dist/styles.css');for(const file of fs.readdirSync('src/fonts'))fs.copyFileSync('src/fonts/'+file,'dist/fonts/'+file)\"",
     "prepublishOnly": "pnpm build:lib"
   },
   "devDependencies": {

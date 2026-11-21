@@ -1,3 +1,75 @@
+@font-face {
+  font-family: "Noto Sans SC";
+  src: url("./fonts/NotoSansSC-Thin.subset.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 100;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Noto Sans SC";
+  src: url("./fonts/NotoSansSC-ExtraLight.subset.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 200;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Noto Sans SC";
+  src: url("./fonts/NotoSansSC-Light.subset.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Noto Sans SC";
+  src: url("./fonts/NotoSansSC-Regular.subset.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Noto Sans SC";
+  src: url("./fonts/NotoSansSC-Medium.subset.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Noto Sans SC";
+  src: url("./fonts/NotoSansSC-SemiBold.subset.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Noto Sans SC";
+  src: url("./fonts/NotoSansSC-Bold.subset.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Noto Sans SC";
+  src: url("./fonts/NotoSansSC-ExtraBold.subset.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Noto Sans SC";
+  src: url("./fonts/NotoSansSC-Black.subset.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 900;
+  font-display: swap;
+}
+
 :root {
   color-scheme: light;
 
@@ -71,9 +143,9 @@
   --mt-dur: 200ms;
   --mt-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
 
-  --mt-font: "DM Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", "Microsoft YaHei", sans-serif;
-  --mt-font-display: "Manrope", "Noto Serif SC", ui-serif, Georgia, "Songti SC", serif;
-  --mt-font-cn: "Noto Serif SC", "Songti SC", "SimSun", serif;
+  --mt-font: "Noto Sans SC", ui-sans-serif, system-ui, sans-serif;
+  --mt-font-display: "Noto Sans SC", ui-sans-serif, system-ui, sans-serif;
+  --mt-font-cn: "Noto Sans SC", ui-sans-serif, system-ui, sans-serif;
   --mt-mono: ui-monospace, "Cascadia Mono", Consolas, monospace;
 }
 

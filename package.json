@@ -1,6 +1,6 @@
 {
   "name": "maotaui",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "现代无头 Web Components 组件库, SSR 安全、零水合报错",
   "type": "module",
   "main": "./dist/index.js",

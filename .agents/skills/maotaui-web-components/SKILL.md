@@ -9,16 +9,17 @@ Native custom elements, no runtime framework. Docs site is a React 19 shell that
 
 ## Repo map
 
-- `src/index.ts` — entry. Exports core + elements, then calls `defineMaoElements()` only when `customElements` exists.
+- `src/index.ts` — entry. Exports core + elements, then calls `defineMaoElements()` only when `customElements` exists. It is JS-only: styles are a separate `maotaui/styles.css` subpath.
 - `src/elements/*.ts` — element classes. Each declares `static mode`; most controls, display and layout elements are `"shadow"` (with `static styles` + `shadowHTML`), the rest render light DOM.
 - `src/core/registry.ts` — single source of truth for tag, attributes, events, slots, example. Docs and AI read this instead of duplicating tables.
 - `src/core/` — `theme.ts`, `tokens.ts`, `color.ts`, `icons.ts`, `events.ts`, `form.ts`, `dom.ts`.
 - `src/core/icons.generated.ts` — generated Lucide icon bodies; gitignored, never hand-edit.
 - `scripts/build-icons.ts` — reads `@iconify-json/lucide`, extracts the required icons, writes `icons.generated.ts`.
-- `src/styles.css` — design tokens (color head generated from `color.ts`) plus `.mt-*` classes used by elements and consumers.
+- `src/styles.css` — design tokens (color head generated from `color.ts`) plus `.mt-*` classes used by elements and consumers. It is not imported by the entry; consumers import the published `maotaui/styles.css`.
 - `website/` — React docs shell (`routes.ts`, `pages/`, `components/ApiProps.tsx`).
+- `website/src/main.tsx` — React entry; imports `../../src/styles.css` explicitly before the site styles.
 - `website/src/Docs.tsx` + `website/src/shell.css` — docs chrome: topbar, `.sidebar` nav grouped by `route.group`, `.content`; demo-stage styles live in `demo.css`.
-- `scripts/ssr-smoke.ts` — Node import + registry consistency test.
+- `scripts/ssr-smoke.ts` — Node import + registry consistency test. It runs without a CSS resolve hook, so it catches non-JS imports in the entry.
 
 ## Commands
 
@@ -73,6 +74,7 @@ pnpm dev          # docs site on http://localhost:5173
 ## Hard constraints
 
 - SSR safe: never touch `window`, `document`, `localStorage`, or `customElements` at module top level. Guard with `typeof`. Importing `src/index.ts` in Node must not throw.
+- The entry must contain no non-JS static imports (no `import "./styles.css"`, JSON, etc.). Styles ship through the `maotaui/styles.css` subpath and are imported by the client entry.
 - No network: icons are inline SVG bodies generated into `src/core/icons.generated.ts`; no fetch, no remote images, no `@import url(`.
 - Deterministic output: no `Math.random`, `Date.now`, or `crypto.randomUUID` in `src/`.
 - Events use the `mt-` prefix, are dispatched through `src/core/events.ts`, and always set `bubbles: true, composed: true`.
@@ -83,6 +85,5 @@ pnpm dev          # docs site on http://localhost:5173
 
 - React 19 does not map `mt-*` events to `onXxx`. Use `ref` + `addEventListener`, as in `website/src/useMaoEvents.ts`.
 - Passing `false` to a boolean prop writes `attr="false"`, which is still present and truthy for elements. Pass `undefined` instead (`on()` in `website/src/pages/shared.ts`).
-- Node cannot import `.css`; `scripts/ssr-smoke.ts` installs a resolve hook that stubs stylesheets.
 - Form-associated elements extend `FormAssociated` in `src/core/form.ts`, which falls back to an empty base class when `HTMLElement` is undefined.
 - The registry drives docs: if an attribute is missing there, it is invisible to users and AI.

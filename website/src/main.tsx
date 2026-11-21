@@ -1,3 +1,4 @@
+import "../../src/styles.css";
 import "../../src/index.ts";
 import { applyTheme, resolveTheme } from "../../src/core/theme.ts";
 import { createRoot } from "react-dom/client";

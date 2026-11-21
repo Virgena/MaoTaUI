@@ -23,8 +23,11 @@ const first = iconSvg("check");
 assert.equal(first, iconSvg("check"), "iconSvg 必须是纯函数");
 assert.ok(first.includes("<svg"), "iconSvg 应返回 SVG 字符串");
 assert.ok(iconSvg("chevron-down").includes("<path"), "Lucide 图标应正常生成");
+assert.ok(iconSvg("house").includes("<path"), "Lucide house 图标应正常生成");
+assert.ok(iconSvg("home").includes("<path"), "Lucide home 别名应正常生成");
+assert.ok(iconSvg("menu").includes("<path"), "Lucide menu 图标应正常生成");
 assert.equal(iconSvg("not-an-icon"), "", "未知图标应返回空字符串");
-assert.ok(ICON_NAMES.length >= 40, "内置图标数量不足");
+assert.equal(ICON_NAMES.length, 2346, "内置图标应包含全部 Lucide 正式名称与别名");
 
 const tags = COMPONENT_REGISTRY.map((item) => item.tag);
 assert.equal(new Set(tags).size, tags.length, "registry 中存在重复标签");

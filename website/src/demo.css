@@ -108,6 +108,11 @@
   margin-bottom: var(--mt-space-4);
 }
 
+.icon-search {
+  width: min(360px, 100%);
+  margin-bottom: var(--mt-space-3);
+}
+
 .icon-cell {
   display: flex;
   flex-direction: column;

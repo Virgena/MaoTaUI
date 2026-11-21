@@ -36,7 +36,10 @@ export function Docs() {
                 });
               }}
             >
-              <summary className={group === page.group ? "active" : ""}>{group}</summary>
+              <summary className={group === page.group ? "active" : ""}>
+                {group}
+                <mao-icon className="group-chevron" name="chevron-down" size={14} />
+              </summary>
               <div className="sidebar-links">
                 {routes
                   .filter((item) => item.group === group)

@@ -89,8 +89,6 @@ export class MaoNotice extends MaoElement {
     .mark {
       display: grid; place-items: center;
       width: 18px; height: 18px; margin-top: 1px;
-      border: 1px solid currentColor; border-radius: 50%;
-      font-size: 10px; font-weight: 700; line-height: 1;
     }
     .title { font-weight: 600; line-height: 1.4; }
     .title:empty { display: none; }
@@ -108,8 +106,16 @@ export class MaoNotice extends MaoElement {
     const mark = this.q(".mark");
     const title = this.q(".title");
     const tone = this.attr("tone", "info");
-    const marks: Record<string, string> = { info: "i", sage: "✓", success: "✓", blue: "i", accent: "★", danger: "×", warning: "!" };
-    if (mark) mark.textContent = marks[tone] ?? "i";
+    const marks: Record<string, string> = {
+      info: "info",
+      sage: "check",
+      success: "check",
+      blue: "info",
+      accent: "star",
+      danger: "triangle-alert",
+      warning: "triangle-alert",
+    };
+    if (mark) mark.innerHTML = iconSvg(marks[tone] ?? "info", { size: 16 });
     if (title) title.textContent = this.attr("title");
   }
 }

@@ -3,52 +3,6 @@ import { createRequire } from "node:module";
 import { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
-const ICON_SOURCES = [
-  "plus",
-  "minus",
-  "check",
-  "x",
-  "search",
-  "ellipsis",
-  "copy",
-  "cpu",
-  "refresh-cw",
-  "link",
-  "external-link",
-  "chevron-down",
-  "chevron-right",
-  "arrow-left",
-  "arrow-up",
-  "arrow-right",
-  "arrow-up-right",
-  "square",
-  "trash",
-  "calendar",
-  "clock",
-  "folder",
-  "folder-open",
-  "plug",
-  "sliders-vertical",
-  "lightbulb",
-  "hand",
-  "shield-check",
-  "pin",
-  "archive",
-  "rotate-ccw",
-  "git-branch",
-  "git-fork",
-  "info",
-  "triangle-alert",
-  "heart",
-  "star",
-  "bookmark",
-  "share-2",
-  "message-square",
-  "sun",
-  "moon",
-  "palette",
-] as const;
-
 interface IconifyData {
   width?: number;
   height?: number;
@@ -60,6 +14,7 @@ const require = createRequire(import.meta.url);
 const data = JSON.parse(
   readFileSync(require.resolve("@iconify-json/lucide/icons.json"), "utf8"),
 ) as IconifyData;
+const iconNames = [...new Set([...Object.keys(data.icons), ...Object.keys(data.aliases ?? {})])].sort();
 
 if (data.width !== 24 || data.height !== 24) {
   throw new Error(`Lucide 图标尺寸应为 24×24，实际为 ${String(data.width)}×${String(data.height)}`);
@@ -93,7 +48,7 @@ function quote(value: string): string {
   return `'${value.replace(/\\/g, "\\\\").replace(/'/g, "\\'")}'`;
 }
 
-const entries = ICON_SOURCES.map((name) => {
+const entries = iconNames.map((name) => {
   const body = normalize(resolveBody(name));
   if (!body.startsWith("<")) throw new Error(`图标 ${name} 的 SVG 内容无效: ${body}`);
   return `  "${name}": ${quote(body)},`;

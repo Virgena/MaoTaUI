@@ -1,5 +1,6 @@
 import { MaoElement } from "./base.ts";
 import { emit } from "../core/events.ts";
+import { iconSvg } from "../core/icons.ts";
 
 const FIELD_STYLES = `
   :host { display: block; font-family: var(--mt-font); }
@@ -395,19 +396,11 @@ export class MaoCheckbox extends MaoElement {
       border: 1px solid var(--mt-line-strong);
       border-radius: 5px;
       background: var(--mt-surface);
+      color: var(--mt-on-accent);
       transition: background var(--mt-dur-fast) var(--mt-ease), border-color var(--mt-dur-fast) var(--mt-ease);
     }
-    .box::after {
-      content: ""; width: 9px; height: 5px;
-      border-left: 2px solid var(--mt-on-accent);
-      border-bottom: 2px solid var(--mt-on-accent);
-      transform: rotate(-45deg) translateY(-1px) scale(0);
-      transition: transform var(--mt-dur-fast) var(--mt-ease);
-    }
     :host([checked]) .box { background: var(--mt-accent); border-color: var(--mt-accent); }
-    :host([checked]) .box::after { transform: rotate(-45deg) translateY(-1px) scale(1); }
     :host([indeterminate]) .box { background: var(--mt-accent); border-color: var(--mt-accent); }
-    :host([indeterminate]) .box::after { width: 9px; height: 0; border-left: 0; border-bottom: 2px solid var(--mt-on-accent); transform: none; }
     .native:focus-visible ~ .box { outline: 2px solid var(--mt-accent); outline-offset: 3px; }
     :host([disabled]) .root { opacity: 0.5; cursor: not-allowed; }
     .text:empty { display: none; }
@@ -446,6 +439,14 @@ export class MaoCheckbox extends MaoElement {
       input.disabled = disabled;
       input.name = this.attr("name");
       input.value = this.attr("value", "on");
+    }
+    const box = this.q<HTMLElement>(".box");
+    if (box) {
+      box.innerHTML = this.bool("indeterminate")
+        ? iconSvg("minus", { size: 12 })
+        : this.bool("checked")
+          ? iconSvg("check", { size: 12 })
+          : "";
     }
     this.syncFormValue(this.bool("checked") ? this.attr("value", "on") : null);
   }

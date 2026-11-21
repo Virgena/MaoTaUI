@@ -1,8 +1,15 @@
+import { useMemo, useState } from "react";
 import { ApiProps } from "../components/ApiProps.tsx";
 import { Demo } from "../components/Demo.tsx";
 import { ICON_NAMES, ICON_PATHS } from "../../../src/core/icons.ts";
 
 export function IconPage() {
+  const [query, setQuery] = useState("");
+  const icons = useMemo(() => {
+    const keyword = query.trim().toLowerCase();
+    return keyword ? ICON_NAMES.filter((name) => name.includes(keyword)) : ICON_NAMES;
+  }, [query]);
+
   return (
     <>
       <h1>图标</h1>
@@ -48,14 +55,23 @@ export function IconPage() {
       </Demo>
 
       <h2>图标列表</h2>
+      <input
+        className="mt-input icon-search"
+        type="search"
+        value={query}
+        placeholder="搜索图标名称"
+        aria-label="搜索图标名称"
+        onChange={(event) => setQuery(event.target.value)}
+      />
       <div className="icon-grid">
-        {ICON_NAMES.map((name) => (
+        {icons.map((name) => (
           <div className="icon-cell" key={name} title={ICON_PATHS[name]}>
             <mao-icon name={name} size={20} />
             <span>{name}</span>
           </div>
         ))}
       </div>
+      {icons.length === 0 ? <p className="demo-note">没有匹配的图标。</p> : null}
 
       <ApiProps tag="mao-icon" />
     </>

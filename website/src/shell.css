@@ -307,21 +307,13 @@ body,
   display: none;
 }
 
-.sidebar summary::after {
-  content: "";
-  width: 6px;
-  height: 6px;
-  flex: none;
-  margin: 0 var(--mt-space-1) 2px 0;
-  border-right: 1.5px solid currentColor;
-  border-bottom: 1.5px solid currentColor;
-  transform: rotate(-45deg);
+.sidebar .group-chevron {
+  margin-left: auto;
   transition: transform var(--mt-dur-fast) var(--mt-ease);
 }
 
-.sidebar details[open] > summary::after {
-  margin-bottom: -2px;
-  transform: rotate(45deg);
+.sidebar details[open] > summary .group-chevron {
+  transform: rotate(180deg);
 }
 
 .sidebar summary:hover {

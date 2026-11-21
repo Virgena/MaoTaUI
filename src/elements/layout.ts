@@ -1,6 +1,7 @@
 import { MaoElement } from "./base.ts";
 import { bindRoving, setBoolAttr, syncScrollEdges, enableWheelScroll, enableDragScroll } from "../core/dom.ts";
 import { emit } from "../core/events.ts";
+import { iconSvg } from "../core/icons.ts";
 
 /** `<mao-card>`：light DOM 容器。 */
 export class MaoCard extends MaoElement {
@@ -319,7 +320,7 @@ export class MaoDialog extends MaoElement {
       <div class="panel">
         <header class="head">
           <div class="title" part="title"></div>
-          <button class="close" part="close" type="button" aria-label="关闭">×</button>
+          <button class="close" part="close" type="button" aria-label="关闭"></button>
         </header>
         <div class="body" part="body"><slot></slot></div>
         <footer class="foot"><slot name="actions"></slot></footer>
@@ -345,7 +346,7 @@ export class MaoDialog extends MaoElement {
     .close {
       appearance: none; border: 0; background: transparent;
       color: var(--mt-muted); cursor: pointer; padding: 2px 6px;
-      font-size: 20px; line-height: 1; border-radius: var(--mt-radius-sm);
+      line-height: 0; border-radius: var(--mt-radius-sm);
     }
     .close:hover { color: var(--mt-text); background: var(--mt-surface-2); }
     .close:focus-visible { outline: 2px solid var(--mt-accent); outline-offset: 2px; }
@@ -382,7 +383,10 @@ export class MaoDialog extends MaoElement {
     const title = this.q(".title");
     if (title) title.textContent = this.attr("heading");
     const close = this.q<HTMLElement>(".close");
-    if (close) close.hidden = !this.bool("closable");
+    if (close) {
+      close.hidden = !this.bool("closable");
+      close.innerHTML = iconSvg("x", { size: 16 });
+    }
     this.#applyOpen();
   }
 

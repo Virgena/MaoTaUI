@@ -182,10 +182,13 @@ export class MaoReaction extends MaoElement {
     .text:empty { display: none; }
     :host([size="sm"]) .btn { font-size: var(--mt-fs-xs); padding: 2px 7px; }
     :host([size="lg"]) .btn { font-size: var(--mt-fs-md); padding: 5px 12px; }
+    :host([variant="plain"]) .btn { padding: 0; border-color: transparent; background: transparent; }
+    :host([variant="plain"]) .btn:hover { border-color: transparent; background: transparent; }
+    :host([variant="plain"][active]) .btn { color: var(--c); background: transparent; }
   `;
 
   static get observedAttributes(): string[] {
-    return ["active", "count", "icon", "color", "size", "label"];
+    return ["active", "count", "icon", "color", "size", "label", "variant"];
   }
 
   #bound = false;
@@ -202,9 +205,10 @@ export class MaoReaction extends MaoElement {
     const icon = this.q(".ic");
     const count = this.q(".count");
     const color = this.attr("color", "danger");
-    this.style.setProperty("--c", `var(--mt-color-${color})`);
-    this.style.setProperty("--c-fill", `var(--mt-fill-${color})`);
-    this.style.setProperty("--on-c", `var(--mt-on-${color})`);
+    const muted = color === "muted";
+    this.style.setProperty("--c", muted ? "var(--mt-muted)" : `var(--mt-color-${color})`);
+    this.style.setProperty("--c-fill", muted ? "var(--mt-surface-2)" : `var(--mt-fill-${color})`);
+    this.style.setProperty("--on-c", muted ? "var(--mt-text)" : `var(--mt-on-${color})`);
     if (icon) icon.innerHTML = iconSvg(this.attr("icon", "heart"), { size: 14 });
     if (count) count.textContent = this.attr("count");
     const button = this.q(".btn");

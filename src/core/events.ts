@@ -1,10 +1,19 @@
 export interface MaoEventMap {
-  "mt-change": { value: string; checked?: boolean };
+  "mt-change": {
+    value?: string;
+    checked?: boolean;
+    values?: string[];
+    page?: number;
+    pageSize?: number;
+    href?: string;
+  };
   "mt-toggle": { active: boolean; value?: string };
   "mt-input": { value: string; name?: string };
   "mt-copy": { text: string };
   "mt-open": Record<string, never>;
   "mt-close": Record<string, never>;
+  "mt-submit": { values: Record<string, string> };
+  "mt-invalid": { errors: Record<string, string> };
 }
 
 export type MaoEventType = keyof MaoEventMap;

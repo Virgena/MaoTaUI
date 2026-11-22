@@ -25,6 +25,7 @@ interface MaoButtonAttrs extends MaoBase {
   color?: Color;
   variant?: "solid" | "shadow" | "bordered" | "flat" | "light";
   size?: "sm" | "md" | "lg";
+  type?: "button" | "submit" | "reset";
   loading?: Bool;
   disabled?: Bool;
   href?: string;
@@ -92,6 +93,11 @@ interface MaoTextFieldAttrs extends MaoBase {
   disabled?: Bool;
   readonly?: Bool;
   invalid?: Bool;
+  autocomplete?: string;
+  maxlength?: number | string;
+  "show-count"?: Bool;
+  clearable?: Bool;
+  icon?: string;
 }
 
 interface MaoTextAreaAttrs extends MaoTextFieldAttrs {
@@ -107,6 +113,8 @@ interface MaoSelectAttrs extends MaoBase {
   name?: string;
   required?: Bool;
   disabled?: Bool;
+  invalid?: Bool;
+  clearable?: Bool;
 }
 
 interface MaoSwitchAttrs extends MaoBase {
@@ -217,6 +225,106 @@ interface MaoDialogAttrs extends MaoBase {
   closable?: Bool;
 }
 
+interface MaoToastAttrs extends MaoBase {
+  tone?: "info" | "success" | "warning" | "danger";
+  heading?: string;
+  closable?: Bool;
+}
+
+interface MaoSpinnerAttrs extends MaoBase {
+  size?: "sm" | "md" | "lg";
+  label?: string;
+}
+
+interface MaoSkeletonAttrs extends MaoBase {
+  lines?: number | string;
+  avatar?: Bool;
+  animated?: Bool;
+  block?: Bool;
+}
+
+interface MaoEmptyAttrs extends MaoBase {
+  icon?: string;
+  title?: string;
+  description?: string;
+}
+
+interface MaoTooltipAttrs extends MaoBase {
+  content?: string;
+  placement?: "top" | "bottom" | "start" | "end";
+  delay?: number | string;
+}
+
+interface MaoMenuAttrs extends MaoBase {
+  value?: string;
+  orientation?: "vertical" | "horizontal";
+  label?: string;
+  disabled?: Bool;
+}
+
+interface MaoMenuItemAttrs extends MaoBase {
+  value?: string;
+  icon?: string;
+  href?: string;
+  badge?: string;
+  active?: Bool;
+  disabled?: Bool;
+}
+
+interface MaoDropdownAttrs extends MaoBase {
+  open?: Bool;
+  placement?: "bottom-end" | "bottom-start" | "top-end" | "top-start";
+}
+
+interface MaoDrawerAttrs extends MaoBase {
+  open?: Bool;
+  heading?: string;
+  placement?: "end" | "start";
+  size?: "sm" | "md" | "lg";
+  closable?: Bool;
+}
+
+interface MaoPaginationAttrs extends MaoBase {
+  total?: number | string;
+  page?: number | string;
+  "page-size"?: number | string;
+  siblings?: number | string;
+  simple?: Bool;
+  label?: string;
+  disabled?: Bool;
+}
+
+interface MaoDescriptionsAttrs extends MaoBase {
+  columns?: number | string;
+  bordered?: Bool;
+}
+
+interface MaoDescriptionsItemAttrs extends MaoBase {
+  label?: string;
+  span?: number | string;
+}
+
+interface MaoFormAttrs extends MaoBase {
+  disabled?: Bool;
+  label?: string;
+}
+
+interface MaoFormItemAttrs extends MaoBase {
+  name?: string;
+  label?: string;
+  hint?: string;
+  rules?: string;
+  required?: Bool;
+  error?: string;
+}
+
+interface MaoCheckboxGroupAttrs extends MaoBase {
+  name?: string;
+  value?: string;
+  label?: string;
+  disabled?: Bool;
+}
+
 declare module "react" {
   namespace JSX {
     interface IntrinsicElements {
@@ -246,6 +354,21 @@ declare module "react" {
       "mao-scroll-shadow": MaoScrollShadowAttrs;
       "mao-notice": MaoNoticeAttrs;
       "mao-dialog": MaoDialogAttrs;
+      "mao-toast": MaoToastAttrs;
+      "mao-spinner": MaoSpinnerAttrs;
+      "mao-skeleton": MaoSkeletonAttrs;
+      "mao-empty": MaoEmptyAttrs;
+      "mao-tooltip": MaoTooltipAttrs;
+      "mao-menu": MaoMenuAttrs;
+      "mao-menu-item": MaoMenuItemAttrs;
+      "mao-dropdown": MaoDropdownAttrs;
+      "mao-drawer": MaoDrawerAttrs;
+      "mao-pagination": MaoPaginationAttrs;
+      "mao-descriptions": MaoDescriptionsAttrs;
+      "mao-descriptions-item": MaoDescriptionsItemAttrs;
+      "mao-form": MaoFormAttrs;
+      "mao-form-item": MaoFormItemAttrs;
+      "mao-checkbox-group": MaoCheckboxGroupAttrs;
     }
   }
 }

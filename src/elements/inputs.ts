@@ -21,6 +21,28 @@ const FIELD_STYLES = `
   .control:focus-visible { outline: 2px solid color-mix(in srgb, var(--mt-accent) 40%, transparent); border-color: var(--mt-accent); }
   .control[aria-invalid="true"] { border-color: var(--mt-danger); }
   .control:disabled { opacity: 0.55; cursor: not-allowed; }
+  .wrap { position: relative; display: block; min-width: 0; }
+  .prefix {
+    position: absolute; left: 10px; top: 50%; transform: translateY(-50%);
+    display: none; color: var(--mt-faint); line-height: 0; pointer-events: none;
+  }
+  .clear {
+    position: absolute; right: 6px; top: 50%; transform: translateY(-50%);
+    display: none; place-items: center;
+    width: 20px; height: 20px; padding: 0;
+    border: 0; border-radius: 50%;
+    background: transparent; color: var(--mt-faint);
+    cursor: pointer; line-height: 0;
+  }
+  .clear:hover { color: var(--mt-text); background: var(--mt-surface-2); }
+  .clear:focus-visible { outline: 2px solid var(--mt-accent); outline-offset: 2px; }
+  .wrap.has-icon .prefix { display: block; }
+  .wrap.has-icon .control { padding-left: 34px; }
+  .wrap.has-clear .control { padding-right: 30px; }
+  .wrap.has-clear.has-value .clear { display: grid; }
+  .foot { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+  .count { margin-left: auto; font-size: var(--mt-fs-xs); color: var(--mt-faint); font-variant-numeric: tabular-nums; }
+  :host(:not([show-count])) .count { display: none; }
 `;
 
 /** `<mao-text-field>`：shadow DOM + 表单关联。 */
@@ -28,23 +50,42 @@ export class MaoTextField extends MaoElement {
   static formAssociated = true;
   static override readonly mode = "shadow" as const;
   static override readonly shadowHTML = `
-    <label class="field" part="field">
-      <span class="label" part="label"></span>
-      <input class="control" part="input" />
-      <span class="hint" part="hint"></span>
-    </label>
+    <div class="field" part="field">
+      <label class="label" part="label" for="control"></label>
+      <span class="wrap" part="wrap">
+        <span class="prefix" part="prefix"></span>
+        <input class="control" id="control" part="input" />
+        <button class="clear" part="clear" type="button" aria-label="清空"></button>
+      </span>
+      <span class="foot" part="foot">
+        <span class="hint" part="hint"></span>
+        <span class="count" part="count"></span>
+      </span>
+    </div>
   `;
   static override readonly styles = FIELD_STYLES;
 
   static get observedAttributes(): string[] {
-    return ["label", "hint", "value", "placeholder", "type", "name", "required", "disabled", "readonly", "invalid", "autocomplete"];
+    return [
+      "label",
+      "hint",
+      "value",
+      "placeholder",
+      "type",
+      "name",
+      "required",
+      "disabled",
+      "readonly",
+      "invalid",
+      "autocomplete",
+      "maxlength",
+      "show-count",
+      "clearable",
+      "icon",
+    ];
   }
 
-  constructor() {
-    super();
-    this.shadowRoot?.addEventListener("input", this.#onInput);
-    this.shadowRoot?.addEventListener("change", this.#onInput);
-  }
+  #bound = false;
 
   override connectedCallback(): void {
     super.connectedCallback();
@@ -52,11 +93,10 @@ export class MaoTextField extends MaoElement {
     if (root && !this.#bound) {
       root.addEventListener("input", this.#onInput);
       root.addEventListener("change", this.#onInput);
+      this.q(".clear")?.addEventListener("click", this.#onClear);
       this.#bound = true;
     }
   }
-
-  #bound = false;
 
   get value(): string {
     return this.q<HTMLInputElement>(".control")?.value ?? this.attr("value");
@@ -72,6 +112,11 @@ export class MaoTextField extends MaoElement {
     const input = this.q<HTMLInputElement>(".control");
     if (label) label.textContent = this.attr("label");
     if (hint) hint.textContent = this.attr("hint");
+    const wrap = this.q(".wrap");
+    const prefix = this.q(".prefix");
+    const clear = this.q(".clear");
+    if (prefix) prefix.innerHTML = iconSvg(this.attr("icon"), { size: 16 });
+    if (clear) clear.innerHTML = iconSvg("x", { size: 14 });
     if (!input) return;
     input.type = this.attr("type", "text");
     input.placeholder = this.attr("placeholder");
@@ -82,6 +127,9 @@ export class MaoTextField extends MaoElement {
     input.setAttribute("aria-invalid", String(this.bool("invalid")));
     const autocomplete = this.getAttribute("autocomplete");
     if (autocomplete !== null) input.setAttribute("autocomplete", autocomplete);
+    const maxlength = this.getAttribute("maxlength");
+    if (maxlength) input.maxLength = this.num("maxlength", -1);
+    else input.removeAttribute("maxlength");
     const next = this.attr("value");
     if (input.value !== next) input.value = next;
     this.syncFormValue(next);
@@ -90,14 +138,66 @@ export class MaoTextField extends MaoElement {
     } else {
       this.syncValidity({});
     }
+    if (wrap) {
+      wrap.classList.toggle("has-icon", Boolean(this.attr("icon")));
+      wrap.classList.toggle("has-clear", this.bool("clearable"));
+      wrap.classList.toggle("has-value", next !== "");
+    }
+    this.#syncCount(next);
+  }
+
+  #syncCount(value: string): void {
+    const count = this.q(".count");
+    if (!count) return;
+    const limit = this.num("maxlength", 0);
+    count.textContent = limit > 0 ? `${value.length}/${limit}` : String(value.length);
   }
 
   #onInput = (event: Event): void => {
     const input = event.target;
     if (!(input instanceof HTMLInputElement)) return;
     if (this.getAttribute("value") !== input.value) this.setAttribute("value", input.value);
+    this.#syncCount(input.value);
     emit(this, "mt-input", { value: input.value, name: this.attr("name") });
   };
+
+  #onClear = (): void => {
+    if (this.bool("disabled") || this.bool("readonly")) return;
+    this.setAttribute("value", "");
+    this.#syncCount("");
+    emit(this, "mt-input", { value: "", name: this.attr("name") });
+    emit(this, "mt-change", { value: "" });
+    this.focus();
+  };
+
+  /** 选中区间。 */
+  getSelection(): { start: number; end: number } {
+    const input = this.q<HTMLInputElement>(".control");
+    return { start: input?.selectionStart ?? 0, end: input?.selectionEnd ?? 0 };
+  }
+
+  setSelection(start: number, end = start): void {
+    const input = this.q<HTMLInputElement>(".control");
+    if (!input) return;
+    input.setSelectionRange(start, end);
+    input.focus();
+  }
+
+  /** 在光标处插入文本，或替换当前选区。 */
+  insert(text: string): void {
+    const input = this.q<HTMLInputElement>(".control");
+    if (!input) return;
+    const start = input.selectionStart ?? input.value.length;
+    const end = input.selectionEnd ?? start;
+    const next = `${input.value.slice(0, start)}${text}${input.value.slice(end)}`;
+    this.setAttribute("value", next);
+    input.value = next;
+    const caret = start + text.length;
+    input.focus();
+    input.setSelectionRange(caret, caret);
+    this.#syncCount(next);
+    emit(this, "mt-input", { value: next, name: this.attr("name") });
+  }
 
   override focus(): void {
     const control = this.q<HTMLElement>(".control");
@@ -111,16 +211,32 @@ export class MaoTextArea extends MaoElement {
   static formAssociated = true;
   static override readonly mode = "shadow" as const;
   static override readonly shadowHTML = `
-    <label class="field" part="field">
-      <span class="label" part="label"></span>
-      <textarea class="control" part="textarea"></textarea>
-      <span class="hint" part="hint"></span>
-    </label>
+    <div class="field" part="field">
+      <label class="label" part="label" for="control"></label>
+      <textarea class="control" id="control" part="textarea"></textarea>
+      <span class="foot" part="foot">
+        <span class="hint" part="hint"></span>
+        <span class="count" part="count"></span>
+      </span>
+    </div>
   `;
   static override readonly styles = FIELD_STYLES;
 
   static get observedAttributes(): string[] {
-    return ["label", "hint", "value", "placeholder", "rows", "name", "required", "disabled", "readonly", "invalid"];
+    return [
+      "label",
+      "hint",
+      "value",
+      "placeholder",
+      "rows",
+      "name",
+      "required",
+      "disabled",
+      "readonly",
+      "invalid",
+      "maxlength",
+      "show-count",
+    ];
   }
 
   #bound = false;
@@ -156,15 +272,66 @@ export class MaoTextArea extends MaoElement {
     area.disabled = this.bool("disabled");
     area.readOnly = this.bool("readonly");
     area.setAttribute("aria-invalid", String(this.bool("invalid")));
+    const maxlength = this.getAttribute("maxlength");
+    if (maxlength) area.maxLength = this.num("maxlength", -1);
+    else area.removeAttribute("maxlength");
     const next = this.attr("value");
     if (area.value !== next) area.value = next;
     this.syncFormValue(next);
+    this.#syncCount(next);
+  }
+
+  #syncCount(value: string): void {
+    const count = this.q(".count");
+    if (!count) return;
+    const limit = this.num("maxlength", 0);
+    count.textContent = limit > 0 ? `${value.length}/${limit}` : String(value.length);
+  }
+
+  /** 选中区间。 */
+  getSelection(): { start: number; end: number } {
+    const area = this.q<HTMLTextAreaElement>(".control");
+    return { start: area?.selectionStart ?? 0, end: area?.selectionEnd ?? 0 };
+  }
+
+  setSelection(start: number, end = start): void {
+    const area = this.q<HTMLTextAreaElement>(".control");
+    if (!area) return;
+    area.setSelectionRange(start, end);
+    area.focus();
+  }
+
+  /** 在光标处插入文本，或替换当前选区。 */
+  insert(text: string): void {
+    this.#replace(text, "");
+  }
+
+  /** 用前后缀包裹选区，无选区时插入占位文本。 */
+  wrapSelection(before: string, after: string, placeholder = ""): void {
+    this.#replace(before, after, placeholder);
+  }
+
+  #replace(before: string, after: string, placeholder = ""): void {
+    const area = this.q<HTMLTextAreaElement>(".control");
+    if (!area) return;
+    const start = area.selectionStart ?? area.value.length;
+    const end = area.selectionEnd ?? start;
+    const selected = area.value.slice(start, end) || placeholder;
+    const next = `${area.value.slice(0, start)}${before}${selected}${after}${area.value.slice(end)}`;
+    this.setAttribute("value", next);
+    area.value = next;
+    area.focus();
+    const caretStart = start + before.length;
+    area.setSelectionRange(caretStart, caretStart + selected.length);
+    this.#syncCount(next);
+    emit(this, "mt-input", { value: next, name: this.attr("name") });
   }
 
   #onInput = (event: Event): void => {
     const area = event.target;
     if (!(area instanceof HTMLTextAreaElement)) return;
     if (this.getAttribute("value") !== area.value) this.setAttribute("value", area.value);
+    this.#syncCount(area.value);
     emit(this, "mt-input", { value: area.value, name: this.attr("name") });
   };
 
@@ -178,6 +345,7 @@ export class MaoTextArea extends MaoElement {
 interface SelectOption {
   value: string;
   label: string;
+  disabled?: boolean;
 }
 
 function parseOptions(raw: string): SelectOption[] {
@@ -190,11 +358,12 @@ function parseOptions(raw: string): SelectOption[] {
       if (item && typeof item === "object") {
         const record = item as Record<string, unknown>;
         const value = String(record.value ?? "");
-        return { value, label: String(record.label ?? value) };
+        return { value, label: String(record.label ?? value), disabled: Boolean(record.disabled) };
       }
       return { value: "", label: "" };
     });
   } catch {
+    if (typeof console !== "undefined") console.warn("[maotaui] mao-select 的 options 不是合法 JSON：", raw);
     return [];
   }
 }
@@ -204,16 +373,19 @@ export class MaoSelect extends MaoElement {
   static formAssociated = true;
   static override readonly mode = "shadow" as const;
   static override readonly shadowHTML = `
-    <label class="field" part="field">
-      <span class="label" part="label"></span>
-      <select class="control" part="select"></select>
-      <span class="hint" part="hint"></span>
-    </label>
+    <div class="field" part="field">
+      <label class="label" part="label" for="control"></label>
+      <span class="wrap" part="wrap">
+        <select class="control" id="control" part="select"></select>
+        <button class="clear" part="clear" type="button" aria-label="清空"></button>
+      </span>
+      <span class="foot" part="foot"><span class="hint" part="hint"></span></span>
+    </div>
   `;
   static override readonly styles = FIELD_STYLES;
 
   static get observedAttributes(): string[] {
-    return ["label", "hint", "options", "value", "placeholder", "name", "required", "disabled"];
+    return ["label", "hint", "options", "value", "placeholder", "name", "required", "disabled", "clearable", "invalid"];
   }
 
   #bound = false;
@@ -223,6 +395,7 @@ export class MaoSelect extends MaoElement {
     const root = this.shadowRoot;
     if (root && !this.#bound) {
       root.addEventListener("change", this.#onChange);
+      this.q(".clear")?.addEventListener("click", this.#onClear);
       this.#bound = true;
     }
   }
@@ -239,8 +412,10 @@ export class MaoSelect extends MaoElement {
     const label = this.q(".label");
     const hint = this.q(".hint");
     const select = this.q<HTMLSelectElement>(".control");
+    const clear = this.q(".clear");
     if (label) label.textContent = this.attr("label");
     if (hint) hint.textContent = this.attr("hint");
+    if (clear) clear.innerHTML = iconSvg("x", { size: 14 });
     if (!select) return;
 
     const options = parseOptions(this.attr("options"));
@@ -257,14 +432,21 @@ export class MaoSelect extends MaoElement {
       const option = document.createElement("option");
       option.value = item.value;
       option.textContent = item.label;
+      option.disabled = Boolean(item.disabled);
       select.append(option);
     });
 
     select.name = this.attr("name");
     select.required = this.bool("required");
     select.disabled = this.bool("disabled");
+    select.setAttribute("aria-invalid", String(this.bool("invalid")));
     select.value = this.attr("value");
     this.syncFormValue(select.value);
+    const wrap = this.q(".wrap");
+    if (wrap) {
+      wrap.classList.toggle("has-clear", this.bool("clearable"));
+      wrap.classList.toggle("has-value", select.value !== "");
+    }
   }
 
   #onChange = (): void => {
@@ -272,7 +454,19 @@ export class MaoSelect extends MaoElement {
     if (!select) return;
     this.setAttribute("value", select.value);
     this.syncFormValue(select.value);
+    const wrap = this.q(".wrap");
+    if (wrap) wrap.classList.toggle("has-value", select.value !== "");
     emit(this, "mt-change", { value: select.value });
+  };
+
+  #onClear = (): void => {
+    if (this.bool("disabled")) return;
+    this.setAttribute("value", "");
+    this.syncFormValue("");
+    const wrap = this.q(".wrap");
+    if (wrap) wrap.classList.remove("has-value");
+    this.focus();
+    emit(this, "mt-change", { value: "" });
   };
 
   override focus(): void {

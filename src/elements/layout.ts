@@ -366,6 +366,7 @@ export class MaoDialog extends MaoElement {
     const dialog = this.q<HTMLDialogElement>("dialog");
     if (dialog && !this.#bound) {
       dialog.addEventListener("close", this.#onNativeClose);
+      dialog.addEventListener("cancel", this.#onCancel);
       dialog.addEventListener("click", this.#onBackdrop);
       this.#bound = true;
     }
@@ -375,6 +376,7 @@ export class MaoDialog extends MaoElement {
   disconnectedCallback(): void {
     const dialog = this.q<HTMLDialogElement>("dialog");
     dialog?.removeEventListener("close", this.#onNativeClose);
+    dialog?.removeEventListener("cancel", this.#onCancel);
     dialog?.removeEventListener("click", this.#onBackdrop);
     this.#bound = false;
   }
@@ -415,6 +417,10 @@ export class MaoDialog extends MaoElement {
       this.removeAttribute("open");
       emit(this, "mt-close", {});
     }
+  };
+
+  #onCancel = (event: Event): void => {
+    if (!this.bool("closable")) event.preventDefault();
   };
 
   #onBackdrop = (event: MouseEvent): void => {

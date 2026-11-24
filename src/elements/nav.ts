@@ -135,7 +135,9 @@ export class MaoDropdown extends MaoElement {
     .trigger { display: inline-flex; align-items: center; }
     .panel {
       position: absolute; z-index: 60; top: calc(100% + 6px); right: 0;
-      min-width: 160px; max-width: 280px;
+      width: max-content;
+      min-width: 0;
+      max-width: min(280px, calc(100vw - 16px));
       padding: 4px;
       border: 1px solid var(--mt-border);
       border-radius: var(--mt-radius-md);
